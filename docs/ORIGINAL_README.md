@@ -366,9 +366,7 @@ python3 test_new_architecture.py
 python3 test_monitoring_system.py
 
 # 3. HTML generation tests (for template validation)
-./test/test_html_generation.sh                    # Run all HTML template tests
-./test/test_html_generation.sh --report          # Generate detailed test report
-./scripts/validate_html_generation.sh            # CI/CD validation
+./test/dynamic_full_demo.sh                    # Run all HTML template tests
 
 # 4. Update expected results (when templates change)
 ./scripts/update_html_expectations.sh --all      # Update all template expectations
@@ -389,10 +387,8 @@ For template development and validation, use our automated HTML generation test 
 
 ```bash
 # Quick validation after changes
-./test/test_html_generation.sh
+./test/dynamic_full_demo.sh
 
-# Update expectations after intentional template improvements
-./scripts/update_html_expectations.sh template_name
 ```
 
 ## 📄 License

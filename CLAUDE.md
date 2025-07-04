@@ -68,13 +68,10 @@ Text Input → Boxing → Coloring → Packing → Rendering → HTML Output
 ### テスト実行フロー
 ```bash
 # 全テンプレートのHTML生成テスト
-./test/test_html_generation.sh --report
-
-# 特定テンプレートのテスト
-./test/test_html_generation.sh --template typewriter
+./test/dynamic_full_demo.sh
 
 # 個別生成テスト
-./test/generate_scrollcast.sh typewriter default test/sample_eng.txt output_name
+./test/generate_scrollcast_with_config.sh typewriter default test/sample_eng.txt output_name
 ```
 
 ### デバッグパターン
@@ -240,12 +237,12 @@ scroll-castで以下の問題を調査・修正してください:
 ### 開発サイクル
 ```bash
 # 1. 開発前確認
-./test/test_html_generation.sh --report
+./test/dynamic_full_demo.sh
 
 # 2. 実装
 
 # 3. テスト実行
-./test/test_html_generation.sh --template [template_name]
+./test/dynamic_full_demo.sh
 
 # 4. 統合確認（emotional-decorationとの組み合わせ）
 # (将来的にCSSオーバーライドテストを実装予定)
