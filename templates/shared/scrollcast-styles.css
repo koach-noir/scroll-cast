@@ -1,0 +1,485 @@
+/*
+ * ScrollCast Shared Styles
+ * Common CSS styles shared across all templates
+ * 
+ * Contains:
+ * - Base body and container styles
+ * - Auto Play Plugin styles
+ * - Manual Navigation Plugin styles  
+ * - Floating Time Joystick Plugin styles
+ * - Common responsive design patterns
+ */
+
+/* ============================================================================
+   Base Styles
+   ============================================================================ */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: #000;
+    color: #fff;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
+    cursor: pointer;
+}
+
+/* ============================================================================
+   Auto Play Plugin Styles
+   ============================================================================ */
+.auto-play-indicator {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 12px;
+    z-index: 1000;
+}
+
+/* ============================================================================
+   Manual Navigation Plugin Styles
+   ============================================================================ */
+body {
+    cursor: pointer;
+}
+
+.manual-mode-indicator {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 3px;
+    font-size: 10px;
+    opacity: 0.7;
+    z-index: 1000;
+}
+
+/* ============================================================================
+   Floating Time Joystick Plugin Styles
+   ============================================================================ */
+.joystick-overlay {
+    position: fixed;
+    width: 160px;
+    height: 160px;
+    pointer-events: none;
+    z-index: 9999;
+    display: none;
+}
+
+.joystick-center {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.joystick-handle {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 20px;
+    height: 20px;
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.1s ease;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.speed-indicator {
+    position: absolute;
+    right: -30px;
+    top: 50%;
+    width: 8px;
+    height: 0%;
+    background: linear-gradient(to top, #4CAF50, #FFC107, #FF5722);
+    border-radius: 4px;
+    transform: translateY(-50%);
+    opacity: 0;
+    transition: opacity 0.2s ease, height 0.1s ease;
+}
+
+.speed-indicator.up {
+    background: linear-gradient(to top, #2196F3, #03A9F4, #00BCD4);
+}
+
+.direction-arrow {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.direction-arrow.up {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-bottom: 15px solid rgba(33, 150, 243, 0.8);
+    transform: translate(-50%, -80%);
+}
+
+.direction-arrow.down {
+    border-left: 10px solid transparent;
+    border-right: 10px solid transparent;
+    border-top: 15px solid rgba(76, 175, 80, 0.8);
+    transform: translate(-50%, -20%);
+}
+
+.direction-arrow.swipe {
+    animation: swipePulse 0.3s ease-out;
+}
+
+@keyframes swipePulse {
+    0% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.5); }
+    100% { transform: translate(-50%, -50%) scale(1); }
+}
+
+.control-hint {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+/* ============================================================================
+   Responsive Design Patterns
+   ============================================================================ */
+
+/* Base container styles for templates */
+.template-container {
+    font-size: 5.93vw;
+    font-family: Arial, sans-serif;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    line-height: 1.4;
+}
+
+/* Desktop specific styles */
+@media (min-width: 768px) {
+    .template-container {
+        font-size: 64px;
+        max-width: 600px;
+    }
+}
+
+/* Common animation utilities */
+.fade-in {
+    animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.fade-out {
+    animation: fadeOut 0.8s ease-in-out forwards;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Common transition utilities */
+.smooth-transition {
+    transition: all 0.8s ease-in-out;
+}
+
+.quick-transition {
+    transition: all 0.3s ease;
+}
+
+/* Text styling utilities */
+.text-visible {
+    opacity: 1;
+}
+
+.text-hidden {
+    opacity: 0;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-right {
+    text-align: right;
+}
+
+/* Display utilities */
+.show {
+    display: block;
+}
+
+.hide {
+    display: none;
+}
+
+.invisible {
+    visibility: hidden;
+}
+
+.visible {
+    visibility: visible;
+}
+
+/* ============================================================================
+   Line Navigator Plugin Styles
+   ============================================================================ */
+
+/* Main Navigator Container */
+#line-navigator {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-100%) translateY(-50%);
+    width: 85%;
+    max-width: 500px;
+    height: 500px;
+    background: rgba(0, 0, 0, 0.95);
+    border: 2px solid rgba(76, 175, 80, 0.6);
+    border-radius: 15px;
+    z-index: 2000;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+    overflow: hidden;
+    box-sizing: border-box;
+    
+    /* スライドアニメーション設定 */
+    transition: transform 0.3s ease-out;
+    will-change: transform;
+}
+
+/* アニメーション状態クラス */
+#line-navigator.slide-in {
+    transform: translate(-50%, -50%);
+}
+
+#line-navigator.slide-out {
+    transform: translateX(-100%) translateY(-50%);
+}
+
+/* Navigator Header */
+.line-navigator-header {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 80px;
+    padding: 15px 20px;
+    background: rgba(76, 175, 80, 0.2);
+    border-radius: 13px 13px 0 0;
+    border-bottom: 1px solid rgba(76, 175, 80, 0.3);
+    text-align: center;
+    box-sizing: border-box;
+}
+
+.line-navigator-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #E8F5E8;
+    margin-bottom: 4px;
+}
+
+.line-navigator-subtitle {
+    font-size: 11px;
+    color: #A5D6A7;
+    opacity: 0.8;
+}
+
+/* Navigator List Container */
+.line-navigator-list {
+    position: absolute;
+    top: 80px;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    padding: 10px;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(76, 175, 80, 0.6) transparent;
+    box-sizing: border-box;
+}
+
+.line-navigator-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.line-navigator-list::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.line-navigator-list::-webkit-scrollbar-thumb {
+    background: rgba(76, 175, 80, 0.6);
+    border-radius: 3px;
+}
+
+.line-navigator-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(76, 175, 80, 0.8);
+}
+
+/* Fixed Selection Highlight Overlay */
+.line-navigator-fixed-highlight {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    right: 10px;
+    height: 32px;
+    transform: translateY(-50%);
+    background-color: rgba(76, 175, 80, 0.3);
+    border: 2px solid #4CAF50;
+    border-radius: 5px;
+    pointer-events: none;
+    z-index: 5;
+    transition: opacity 0.2s ease;
+}
+
+/* Individual Line Items */
+.line-navigator-item {
+    padding: 8px 12px;
+    margin: 2px 0;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.08);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    max-width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 10;
+}
+
+/* Remove special styling for selected items - the fixed highlight handles this */
+.line-navigator-item[data-selected="true"] {
+    /* No special background or border - fixed highlight shows selection */
+}
+
+.line-navigator-item:hover {
+    background-color: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Line Number */
+.line-navigator-item-number {
+    font-size: 11px;
+    opacity: 0.7;
+    min-width: 20px;
+    text-align: right;
+    font-weight: normal;
+    color: #666;
+}
+
+/* Line Text */
+.line-navigator-item-text {
+    flex: 1;
+    font-size: 13px;
+    color: #fff;
+    font-weight: normal;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: calc(100% - 40px);
+    word-break: break-word;
+}
+
+/* Selected item text styling removed - fixed highlight handles visual indication */
+
+/* Swipe Message */
+.line-navigator-swipe-message {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(76, 175, 80, 0.9);
+    color: white;
+    padding: 12px 24px;
+    border-radius: 25px;
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: bold;
+    z-index: 3000;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Responsive adjustments */
+@media (max-width: 480px) {
+    #line-navigator {
+        width: 95%;
+        height: 400px;
+    }
+    
+    .line-navigator-header {
+        height: 70px;
+        padding: 12px 15px;
+    }
+    
+    .line-navigator-list {
+        top: 70px;
+        padding: 8px;
+    }
+    
+    .line-navigator-title {
+        font-size: 14px;
+    }
+    
+    .line-navigator-subtitle {
+        font-size: 10px;
+    }
+    
+    .line-navigator-item {
+        padding: 6px 10px;
+        gap: 6px;
+        min-height: 20px;
+    }
+    
+    .line-navigator-item-text {
+        font-size: 12px;
+        max-width: calc(100% - 35px);
+    }
+    
+    .line-navigator-item-number {
+        font-size: 10px;
+        min-width: 18px;
+    }
+}

@@ -1,0 +1,107 @@
+/* ============================================================================
+   Typewriter Fade Template - フェード効果付きタイプライター
+   ============================================================================ */
+
+/* Main container - follows scroll-cast naming standards */
+.typewriter-container {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: bold;
+    text-align: center;
+    width: 90%;
+    max-width: 400px;
+    line-height: 1.4;
+    font-size: 5.93vw;
+    font-family: Arial, sans-serif;
+}
+
+/* デスクトップ表示での固定サイズ */
+@media (min-width: 768px) {
+    .typewriter-container {
+        font-size: 64px;
+        max-width: 600px;
+    }
+}
+
+/* Sentence container - follows scroll-cast naming standards */
+.typewriter-sentence {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: normal;
+    word-wrap: break-word;
+    max-width: 100%;
+    opacity: 1;
+    display: none;
+}
+
+/* アクティブな文 */
+.typewriter-sentence.active {
+    display: block;
+}
+
+/* Individual character - follows scroll-cast naming standards */
+.typewriter-char {
+    opacity: 0;
+    transform: scale(0.8);
+    display: inline-block;
+    transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+}
+
+/* 表示された文字 */
+.typewriter-char.visible {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* フェード効果の強化 */
+.typewriter-char {
+    /* フェード効果の基本設定 */
+    will-change: opacity, transform;
+    backface-visibility: hidden;
+}
+
+/* 文字表示時のアニメーション */
+@keyframes fadeInScale {
+    0% {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 文字に適用される動的アニメーション */
+.typewriter-char.fade-in {
+    animation: fadeInScale 0.2s ease-in-out forwards;
+}
+
+/* 文のフェード効果 */
+.typewriter-sentence {
+    transition: opacity 0.3s ease-in-out;
+}
+
+/* パフォーマンス最適化 */
+.typewriter-container * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* 制御ヒント */
+.control-hint {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    opacity: 0.7;
+    font-family: Arial, sans-serif;
+}

@@ -1,0 +1,77 @@
+template_name: horizontal_ticker
+version: "1.0.0"
+description: "Horizontal ticker effect for news, sports, and social media content"
+author: "Subtitle Generator Team"
+category: "ticker"
+tags: ["horizontal", "news", "sports", "social", "ticker", "scrolling"]
+
+# Default parameters for the template
+default_parameters:
+  scroll_speed: 1.0
+  text_spacing: 2.0
+  font_size: 48
+  loop_behavior: "continuous"
+  fade_edges: true
+  ticker_duration: 10.0
+
+# Predefined presets
+presets:
+  - name: "news_breaking"
+    description: "緊急ニュース速報風"
+    parameters:
+      scroll_speed: 0.8
+      text_spacing: 1.5
+      font_size: 52
+      loop_behavior: "continuous"
+      fade_edges: true
+      ticker_duration: 12.0
+
+  - name: "sports_score"
+    description: "スポーツスコア表示風"
+    parameters:
+      scroll_speed: 1.2
+      text_spacing: 2.5
+      font_size: 44
+      loop_behavior: "continuous"
+      fade_edges: true
+      ticker_duration: 8.0
+
+  - name: "social_feed"
+    description: "ソーシャルメディアフィード風"
+    parameters:
+      scroll_speed: 1.5
+      text_spacing: 3.0
+      font_size: 42
+      loop_behavior: "continuous"
+      fade_edges: true
+      ticker_duration: 7.0
+
+  - name: "stock_prices"
+    description: "株価・金融情報表示風"
+    parameters:
+      scroll_speed: 0.6
+      text_spacing: 2.0
+      font_size: 36
+      loop_behavior: "continuous"
+      fade_edges: false
+      ticker_duration: 15.0
+
+  - name: "announcement"
+    description: "アナウンス・告知文"
+    parameters:
+      scroll_speed: 0.9
+      text_spacing: 1.8
+      font_size: 48
+      loop_behavior: "stop"
+      fade_edges: true
+      ticker_duration: 10.0
+
+  - name: "fast_update"
+    description: "高速更新情報"
+    parameters:
+      scroll_speed: 2.0
+      text_spacing: 1.2
+      font_size: 40
+      loop_behavior: "continuous"
+      fade_edges: true
+      ticker_duration: 5.0

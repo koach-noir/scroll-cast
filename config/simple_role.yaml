@@ -1,0 +1,65 @@
+# Simple Role Template Configuration
+template_name: simple_role
+version: "1.0.0"
+description: "End credits-style scrolling text effect"
+author: "Subtitle Generator Team"
+category: "scroll"
+tags: ["credits", "roll", "scroll", "ending"]
+
+# Default parameters for the template
+default_parameters:
+  animation_duration: 8.0
+  line_interval: 0.2
+  scroll_speed: 1.0
+  font_size: 36
+  font_name: "Arial"
+
+# Predefined presets
+presets:
+  - name: "credits"
+    description: "エンドロール風"
+    parameters:
+      animation_duration: 12.0
+      line_interval: 0.3
+      scroll_speed: 0.8
+      font_size: 32
+
+  - name: "news"
+    description: "ニュース速報風"
+    parameters:
+      animation_duration: 8.0
+      line_interval: 0.2
+      scroll_speed: 1.2
+      font_size: 36
+
+  - name: "announcement"
+    description: "アナウンス風"
+    parameters:
+      animation_duration: 10.0
+      line_interval: 0.4
+      scroll_speed: 1.0
+      font_size: 40
+
+  - name: "fast_scroll"
+    description: "高速スクロール"
+    parameters:
+      animation_duration: 6.0
+      line_interval: 0.15
+      scroll_speed: 1.5
+      font_size: 34
+
+  - name: "slow_scroll"
+    description: "ゆっくりスクロール"
+    parameters:
+      animation_duration: 15.0
+      line_interval: 0.5
+      scroll_speed: 0.6
+      font_size: 38
+
+  - name: "presentation"
+    description: "プレゼンテーション向け"
+    parameters:
+      animation_duration: 10.0
+      line_interval: 0.3
+      scroll_speed: 0.9
+      font_size: 42

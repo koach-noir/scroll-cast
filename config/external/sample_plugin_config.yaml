@@ -1,0 +1,51 @@
+# Sample Plugin External Configuration
+# サンプルプラグイン用外部設定ファイル
+
+# プラグイン識別情報
+plugin_info:
+  name: "sample_plugin"
+  version: "1.0.0"
+  description: "Sample plugin configuration"
+
+# パラメータ設定
+parameters:
+  # 基本パラメータ
+  font_size: 48
+  font_name: "Arial"
+  
+  # エフェクトパラメータ
+  char_interval: 0.12
+  fade_duration: 0.08
+  
+  # タイミングパラメータ
+  pause_duration: 1.5
+  pause_between_lines: 1.2
+  pause_between_paragraphs: 2.0
+
+# 環境別設定
+environments:
+  development:
+    debug: true
+    log_level: "DEBUG"
+    test_mode: true
+  
+  production:
+    debug: false
+    log_level: "INFO"
+    test_mode: false
+
+# 外部連携設定
+external_integrations:
+  api_endpoints:
+    analytics: "https://api.example.com/analytics"
+    feedback: "https://api.example.com/feedback"
+  
+  rate_limits:
+    requests_per_minute: 60
+    burst_limit: 10
+
+# 動的設定（実行時変更可能）
+dynamic_settings:
+  enable_auto_adjustment: true
+  performance_mode: "balanced"  # "fast", "balanced", "quality"
+  cache_size: 100

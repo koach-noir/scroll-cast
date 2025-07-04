@@ -1,0 +1,66 @@
+author: Subtitle Generator Team
+category: typewriter
+default_parameters:
+  char_interval: 0.15
+  fade_duration: 0.1
+  font_name: Arial
+  font_size: 36
+  pause_between_lines: 1.0
+  pause_between_paragraphs: 2.0
+  pause_duration: 1.0
+description: Character-by-character typing effect with fade animation
+parameter_constraints: {}
+presets:
+- description: 高速タイピング効果
+  name: fast
+  parameters:
+    char_interval: 0.08
+    fade_duration: 0.05
+    font_size: 48
+    pause_between_lines: 0.5
+- description: ゆっくりタイピング効果
+  name: slow
+  parameters:
+    char_interval: 0.25
+    fade_duration: 0.15
+    font_size: 36
+    pause_between_lines: 1.5
+- description: 映画風タイピング効果
+  name: cinematic
+  parameters:
+    char_interval: 0.12
+    fade_duration: 0.08
+    font_size: 42
+    pause_between_lines: 1.5
+    pause_between_paragraphs: 2.5
+- description: ドラマチック効果
+  name: dramatic
+  parameters:
+    char_interval: 0.18
+    fade_duration: 0.12
+    font_size: 54
+    pause_between_lines: 2.0
+    pause_between_paragraphs: 3.0
+- description: 控えめな効果
+  name: subtle
+  parameters:
+    char_interval: 0.1
+    fade_duration: 0.06
+    font_size: 32
+    pause_between_lines: 0.8
+    pause_between_paragraphs: 1.5
+- description: プレゼンテーション向け
+  name: presentation
+  parameters:
+    char_interval: 0.14
+    fade_duration: 0.08
+    font_size: 40
+    pause_between_lines: 1.2
+    pause_between_paragraphs: 2.0
+tags:
+- typing
+- character
+- fade
+- animation
+template_name: typewriter_fade
+version: 1.0.0

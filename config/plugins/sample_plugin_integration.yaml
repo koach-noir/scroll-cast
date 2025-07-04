@@ -1,0 +1,50 @@
+# Sample Plugin Integration Configuration
+# サンプルプラグインの統合設定
+
+# プラグイン基本情報
+plugin_name: "sample_plugin"
+template_name: "typewriter_fade"
+version: "1.0.0"
+
+# 外部設定ファイル
+external_config_path: "config/external/sample_plugin_config.yaml"
+
+# パラメータマッピング
+# 外部設定の名前 -> 内部パラメータ名
+parameter_mappings:
+  font_size: "font_size"
+  font_name: "font_name"
+  char_interval: "char_interval"
+  fade_duration: "fade_duration"
+  pause_duration: "pause_duration"
+  pause_between_lines: "pause_between_lines"
+  pause_between_paragraphs: "pause_between_paragraphs"
+
+# デフォルト値オーバーライド
+default_overrides:
+  font_size: 42
+  char_interval: 0.10
+
+# 動的設定
+enable_hot_reload: true
+validation_level: "strict"  # "strict", "relaxed", "none"
+
+# 高度な設定
+advanced_settings:
+  # パラメータ監視
+  parameter_monitoring:
+    enable_logging: true
+    performance_tracking: true
+    error_reporting: true
+  
+  # キャッシュ設定
+  caching:
+    enable_parameter_cache: true
+    cache_ttl_seconds: 300
+    max_cache_entries: 100
+  
+  # 同期設定
+  synchronization:
+    sync_interval_seconds: 5
+    auto_sync_on_change: true
+    fallback_on_error: true
