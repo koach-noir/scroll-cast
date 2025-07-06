@@ -1,7 +1,7 @@
 # ADR-012: External Decoration Injection System for Color Enhancement
 
 ## Status
-**Proposed** - 2025-07-04
+**In Progress** - 2025-07-04 (Phase 1 Complete, Template Migration Required)
 
 ## Context
 
@@ -207,14 +207,156 @@ body {
 - API for third-party decoration systems
 - Template-specific decoration optimizations
 
+## Current Implementation Status (2025-07-04)
+
+### ✅ Phase 1: Completed
+- **emotional-decoration system** successfully implemented
+- **CSS Override Architecture** proven with typewriter template
+- **Reference implementation**: `demo_typewriter_fade_cinematic.html`
+- **Integration manifest** and specifications documented
+
+### 🔄 Current Challenge: Template Architecture
+**Discovery**: ScrollCast converters generate HTML programmatically rather than using template.html files
+
+```python
+# Current Implementation (Problematic)
+def _build_template_html(self) -> str:
+    lines_html = []
+    for timing in self.line_timings:
+        lines_html.append(f'<div class="railway-line">{timing.text}</div>')
+    return f'<div class="railway-container">{content_html}</div>'
+```
+
+**Proposed**: Template-Based Architecture
+```python
+# Improved Implementation
+def _load_and_process_template(self) -> str:
+    template_content = self._load_template_file()
+    lines_html = self._generate_lines_html()
+    return template_content.replace('{{LINES_HTML}}', lines_html)
+```
+
+## Immediate Experimental Goals
+
+### 🎯 Target: Common Selector Unification
+**Scope**: RailwayScroll + SimpleRole templates
+**Focus**: Text color decoration only (simplified proof-of-concept)
+
+#### Current Template Structure
+```html
+<!-- RailwayScroll -->
+<div class="railway-container">
+    <div class="railway-line">Content</div>
+</div>
+
+<!-- SimpleRole -->  
+<div class="role-container">
+    <div class="role-line">Content</div>
+</div>
+```
+
+#### Proposed Common Structure
+```html
+<!-- Both Templates -->
+<div class="text-container" data-template="railway|scroll">
+    <div class="text-line">Content</div>
+</div>
+```
+
+### 🎨 emo-deco Integration (Text Color Focus)
+**Simplified CSS Target**:
+```css
+/* Universal text color enhancement */
+.text-line {
+    color: var(--emo-deco-text-color, #ffffff);
+}
+
+/* Template-specific overrides */
+.text-container[data-template="railway"] .text-line {
+    color: var(--emo-deco-railway-color, #4A90E2);
+}
+
+.text-container[data-template="scroll"] .text-line {
+    color: var(--emo-deco-scroll-color, #7ED321);
+}
+```
+
+## Template-Based Architecture Migration Plan
+
+### Phase A: Infrastructure Migration
+1. **Modify Converters**
+   - Update `railway_scroll_plugin_converter.py`
+   - Update `simple_role_plugin_converter.py`
+   - Implement `_load_and_process_template()` method
+
+2. **Update Template Files**
+   - Modify `railway/railway_scroll/template.html`
+   - Modify `scroll/scroll_role/template.html`
+   - Apply common selector structure
+
+### Phase B: emo-deco Integration
+3. **Generate Text Color CSS**
+   - Create simplified CSS generator
+   - Focus on `color` property only
+   - Support `data-template` attribute targeting
+
+4. **Integration Testing**
+   - Test RailwayScroll with text color decoration
+   - Test SimpleRole with text color decoration
+   - Verify CSS Override Architecture compatibility
+
+### Phase C: Documentation & Handoff
+5. **Update Integration Specifications**
+   - Document common selector standards
+   - Update CSS Override Architecture rules
+   - Create developer handoff documentation
+
+## Reference Implementation Examples
+
+### Success Case: TypeWriter Template
+- **File**: `contents/html/demo_typewriter_fade_cinematic.html`
+- **CSS**: `contents/html/shared/emotional-decoration.css`
+- **Result**: ✅ Non-interference design proven
+- **Evidence**: First sentence enhanced, others standard
+
+### Target Implementation: RailwayScroll + SimpleRole
+- **Expected Files**:
+  - `demo_railway_scroll_enhanced.html`
+  - `demo_simple_role_enhanced.html`
+  - `shared/text-color-decoration.css`
+- **Expected Result**: Text color enhancement without functional impact
+
+## Migration Benefits
+
+### 1. **Architectural Consistency**
+- Template files become source of truth for HTML structure
+- Converters focus solely on data processing
+- Designer-developer separation of concerns
+
+### 2. **Common Selector Scalability**
+- Easy addition of new templates
+- Unified emo-deco CSS targeting
+- Reduced maintenance overhead
+
+### 3. **Future-Proof Design**
+- Template modifications don't require code changes
+- emo-deco can target any template uniformly
+- Clean foundation for advanced decorations
+
 ## Conclusion
 
-The External Decoration Injection System provides a clean, non-invasive way to enhance the visual appeal of generated content while preserving the architectural integrity of the core system. This approach allows for unlimited creative exploration in visual design without compromising the reliability and performance that users depend on.
+The External Decoration Injection System provides a clean, non-invasive way to enhance the visual appeal of generated content while preserving the architectural integrity of the core system. 
 
-The system embodies the principle of "separation of concerns" by keeping decoration logic completely separate from subtitle generation logic, enabling both systems to evolve independently while working together seamlessly.
+**Current Priority**: Complete Template-Based Architecture migration to enable common selector unification and simplified emo-deco integration focused on text color enhancement.
+
+**Success Criteria**: 
+- RailwayScroll and SimpleRole templates use common `.text-container` + `.text-line` selectors
+- emo-deco can control text color via simple CSS without template-specific knowledge
+- Zero impact on existing functionality and performance
 
 ---
 
 **Decision Date**: 2025-07-04
 **Decision Makers**: Development Team
-**Next Review**: After Phase 1 prototype completion
+**Current Phase**: Template Architecture Migration
+**Next Review**: After common selector implementation completion

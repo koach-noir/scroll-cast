@@ -354,7 +354,7 @@ class SimpleRoleDisplayPlugin(InteractionPlugin):
             
             setupDisplay: function() {
                 // 行要素を取得
-                this.lineElements = document.querySelectorAll('.role-line');
+                this.lineElements = document.querySelectorAll('.text-line');
                 this.totalLines = this.lineElements.length;
                 
                 // 初期状態で全ての行を非表示
@@ -439,7 +439,7 @@ class SimpleRoleDisplayPlugin(InteractionPlugin):
             z-index: 10;
         }
         
-        .role-line {
+        .text-line {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -456,7 +456,7 @@ class SimpleRoleDisplayPlugin(InteractionPlugin):
         
         /* デスクトップ表示での固定サイズ */
         @media (min-width: 768px) {
-            .role-line {
+            .text-line {
                 font-size: 36px;
             }
         }
@@ -498,7 +498,7 @@ class RailwayDisplayPlugin(InteractionPlugin):
             
             initialize: function(config) {
                 this.config = config;
-                this.lines = document.querySelectorAll('.railway-line');
+                this.lines = document.querySelectorAll('.text-line');
                 this.currentLineIndex = 0;
                 this.activeAnimations = new Map();
                 this.setupDisplayHandlers();
@@ -515,7 +515,7 @@ class RailwayDisplayPlugin(InteractionPlugin):
             initializeDisplay: function() {
                 // 全ての行を初期状態にリセット
                 this.lines.forEach(line => {
-                    line.className = 'railway-line';
+                    line.className = 'text-line';
                     // 初期位置: 下
                     line.style.transform = 'translate(-50%, -50%) translateY(100px)';
                     line.style.opacity = '0';
@@ -639,7 +639,7 @@ class RailwayDisplayPlugin(InteractionPlugin):
                         onFinish: (line) => {
                             line.style.opacity = '0';
                             line.style.transform = 'translate(-50%, -50%) translateY(100px)';
-                            line.className = 'railway-line';
+                            line.className = 'text-line';
                         }
                     }
                 ];
@@ -666,7 +666,7 @@ class RailwayDisplayPlugin(InteractionPlugin):
             justify-content: center;
         }
         
-        .railway-line {
+        .text-line {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -679,17 +679,17 @@ class RailwayDisplayPlugin(InteractionPlugin):
         }
         
         /* Railway scroll phases */
-        .railway-line.fade-in {
+        .text-line.fade-in {
             opacity: 1;
             transform: translate(-50%, -50%) translateY(0px);   /* 下→中央 */
         }
         
-        .railway-line.static {
+        .text-line.static {
             opacity: 1;
             transform: translate(-50%, -50%) translateY(0px);   /* 中央で静止 */
         }
         
-        .railway-line.fade-out {
+        .text-line.fade-out {
             opacity: 0;
             transform: translate(-50%, -50%) translateY(-100px); /* 中央→上 */
         }

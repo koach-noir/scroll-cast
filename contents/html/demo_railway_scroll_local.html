@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrollCast - Railway Scroll Effect (Plugin)</title>
+    <!-- ScrollCast Shared Styles -->
+    <link rel="stylesheet" href="shared/scrollcast-styles.css">
+    <!-- Template Specific Styles -->
+    <link rel="stylesheet" href="templates/railway/railway_scroll/sc-template.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            cursor: pointer;
+        }
+        
+
+        text-container[data-template="railway"] {
+            font-size: 3.33vw;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* デスクトップ表示での固定サイズ */
+        @media (min-width: 768px) {
+            text-container[data-template="railway"] {
+                font-size: 36px;
+                max-width: 600px;
+            }
+        }
+        
+        
+        .control-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<div class="text-container" data-template="railway">
+    <!-- 行要素はテンプレート生成時に動的に挿入される -->
+    <div class="text-line" data-line="0">Today is a beautiful day.</div>
+        <div class="text-line" data-line="1">I went for a walk in the park.</div>
+        <div class="text-line" data-line="2">The weather was perfect for outdoor</div>
+        <div class="text-line" data-line="3">activities.</div>
+        <div class="text-line" data-line="4">Tomorrow is expected to be rainy.</div>
+        <div class="text-line" data-line="5">I plan to stay home and read a good</div>
+        <div class="text-line" data-line="6">book.</div>
+        <div class="text-line" data-line="7">Maybe I'll also catch up on some movies.</div>
+        <div class="text-line" data-line="8">The weekend is approaching fast.</div>
+        <div class="text-line" data-line="9">I have plans to meet with friends.</div>
+        <div class="text-line" data-line="10">We're thinking about visiting the new</div>
+        <div class="text-line" data-line="11">museum downtown.</div>
+        <div class="text-line" data-line="12">Technology keeps advancing rapidly.</div>
+        <div class="text-line" data-line="13">Artificial intelligence is becoming</div>
+        <div class="text-line" data-line="14">more sophisticated.</div>
+        <div class="text-line" data-line="15">It's changing how we work and live.</div>
+        <div class="text-line" data-line="16">Music has always been part of human</div>
+        <div class="text-line" data-line="17">culture.</div>
+        <div class="text-line" data-line="18">Different genres express different</div>
+        <div class="text-line" data-line="19">emotions.</div>
+        <div class="text-line" data-line="20">Classical music can be very calming and</div>
+        <div class="text-line" data-line="21">peaceful.</div>
+        <div class="text-line" data-line="22">Rock music energizes and motivates</div>
+        <div class="text-line" data-line="23">people.</div>
+        <div class="text-line" data-line="24">Jazz is known for its improvisation and</div>
+        <div class="text-line" data-line="25">creativity.</div>
+        <div class="text-line" data-line="26">Electronic music pushes the boundaries</div>
+        <div class="text-line" data-line="27">of sound.</div>
+        <div class="text-line" data-line="28">Learning a new language opens many</div>
+        <div class="text-line" data-line="29">doors.</div>
+        <div class="text-line" data-line="30">It helps you connect with different</div>
+        <div class="text-line" data-line="31">cultures.</div>
+        <div class="text-line" data-line="32">Travel becomes more meaningful and</div>
+        <div class="text-line" data-line="33">enriching.</div>
+        <div class="text-line" data-line="34">Career opportunities expand</div>
+        <div class="text-line" data-line="35">significantly.</div>
+        <div class="text-line" data-line="36">Books transport us to different worlds.</div>
+        <div class="text-line" data-line="37">Fiction lets our imagination run wild.</div>
+        <div class="text-line" data-line="38">Non-fiction teaches us about reality.</div>
+        <div class="text-line" data-line="39">Biographies inspire us with real</div>
+        <div class="text-line" data-line="40">stories.</div>
+        <div class="text-line" data-line="41">Poetry captures emotions in beautiful</div>
+        <div class="text-line" data-line="42">words.</div>
+        <div class="text-line" data-line="43">Science books expand our understanding</div>
+        <div class="text-line" data-line="44">of the universe.</div>
+</div>
+
+<div class="control-hint">
+    鉄道方向幕風スクロール • タップ/クリックで再生制御
+</div>
+    
+    <div class="control-hint">
+        鉄道方向幕風スクロール • タップ/クリックで再生制御
+    </div>
+    
+    <!-- ScrollCast Core Library -->
+    <script src="shared/scrollcast-core.js"></script>
+    <script src="assets/auto-play-plugin.js"></script>
+    <script src="assets/railway-display-plugin.js"></script>
+    
+    <script>
+        // Template Integration Layer
+        document.addEventListener('DOMContentLoaded', function() {
+            // タイミングデータ
+            const timingData = [{"text": "Today is a beautiful day.", "start_time": 0, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "I went for a walk in the park.", "start_time": 3200, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "The weather was perfect for outdoor", "start_time": 6400, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "activities.", "start_time": 10000, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Tomorrow is expected to be rainy.", "start_time": 13200, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "I plan to stay home and read a good", "start_time": 16800, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "book.", "start_time": 20400, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Maybe I'll also catch up on some movies.", "start_time": 23600, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "The weekend is approaching fast.", "start_time": 27440, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "I have plans to meet with friends.", "start_time": 30640, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "We're thinking about visiting the new", "start_time": 34240, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "museum downtown.", "start_time": 38080, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Technology keeps advancing rapidly.", "start_time": 41280, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "Artificial intelligence is becoming", "start_time": 44880, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "more sophisticated.", "start_time": 48480, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "It's changing how we work and live.", "start_time": 51680, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "Music has always been part of human", "start_time": 55280, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "culture.", "start_time": 58880, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Different genres express different", "start_time": 62080, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "emotions.", "start_time": 65680, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Classical music can be very calming and", "start_time": 68880, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "peaceful.", "start_time": 72720, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Rock music energizes and motivates", "start_time": 75920, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "people.", "start_time": 79520, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Jazz is known for its improvisation and", "start_time": 82720, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "creativity.", "start_time": 86560, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Electronic music pushes the boundaries", "start_time": 89760, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "of sound.", "start_time": 93600, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Learning a new language opens many", "start_time": 96800, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "doors.", "start_time": 100400, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "It helps you connect with different", "start_time": 103600, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "cultures.", "start_time": 107200, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Travel becomes more meaningful and", "start_time": 110400, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2400, "fade_out_start": 3200, "fade_out_duration": 800, "total_duration": 4000}, {"text": "enriching.", "start_time": 114000, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Career opportunities expand", "start_time": 117200, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "significantly.", "start_time": 120400, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Books transport us to different worlds.", "start_time": 123600, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "Fiction lets our imagination run wild.", "start_time": 127440, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "Non-fiction teaches us about reality.", "start_time": 131280, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "Biographies inspire us with real", "start_time": 135120, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "stories.", "start_time": 138320, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Poetry captures emotions in beautiful", "start_time": 141520, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "words.", "start_time": 145360, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}, {"text": "Science books expand our understanding", "start_time": 148560, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2640, "fade_out_start": 3440, "fade_out_duration": 800, "total_duration": 4240}, {"text": "of the universe.", "start_time": 152400, "fade_in_start": 0, "fade_in_duration": 800, "static_start": 800, "static_duration": 2000, "fade_out_start": 2800, "fade_out_duration": 800, "total_duration": 3600}];
+            
+            // テンプレート設定
+            const templateConfig = {
+    "template_name": "railway_scroll",
+    "navigation_unit": "line",
+    "required_plugins": [
+        "auto_play",
+        "railway_display"
+    ],
+    "plugin_configs": {
+        "auto_play": {
+            "auto_start": true,
+            "initial_delay": 500
+        },
+        "railway_display": {
+            "element_selector": ".text-line",
+            "animation_duration": 800
+        }
+    }
+};
+            templateConfig.timingData = timingData;
+            
+            // ScrollCastコアで全プラグインを初期化
+            if (window.ScrollCastCore) {
+                window.ScrollCastCore.initializePlugins(templateConfig);
+            }
+        });
+    </script>
+</body>
+</html>

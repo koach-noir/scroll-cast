@@ -1,0 +1,164 @@
+/* ============================================================================
+   Scroll Role Template - エンドロール風スクロール効果
+   ============================================================================ */
+
+/* Main container - follows scroll-cast naming standards */
+.text-container[data-template="scroll"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    z-index: 10;
+    font-size: 5.93vw;
+    font-family: Arial, sans-serif;
+}
+
+/* デスクトップ表示での固定サイズ */
+@media (min-width: 768px) {
+    .text-container[data-template="scroll"] {
+        font-size: 64px;
+        max-width: 800px;
+        margin: 0 auto;
+    }
+}
+
+/* Individual line - follows scroll-cast naming standards */
+.text-line {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, 100vh);
+    white-space: nowrap;
+    font-weight: bold;
+    text-align: center;
+    font-size: 3vw;
+    color: #ffffff;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    display: none;
+    z-index: 11;
+    will-change: transform, opacity;
+    backface-visibility: hidden;
+}
+
+/* デスクトップ表示での固定サイズ */
+@media (min-width: 768px) {
+    .text-line {
+        font-size: 36px;
+    }
+}
+
+/* エンドロール効果の強化 */
+.text-line {
+    /* グロー効果 */
+    text-shadow: 
+        0 0 5px rgba(255, 255, 255, 0.2),
+        0 0 10px rgba(255, 255, 255, 0.1),
+        2px 2px 4px rgba(0, 0, 0, 0.8);
+    
+    /* フォント効果 */
+    letter-spacing: 0.05em;
+    font-weight: bold;
+}
+
+/* アニメーション状態 */
+.text-line.animating {
+    display: block;
+}
+
+/* フェード効果 */
+@keyframes roleScrollFade {
+    0% {
+        opacity: 0;
+        transform: translate(-50%, 100vh);
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+        transform: translate(-50%, -100vh);
+    }
+}
+
+.text-line.fade-enabled {
+    animation: roleScrollFade 8s linear forwards;
+}
+
+/* パフォーマンス最適化 */
+.text-container[data-template="scroll"] {
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+}
+
+.text-line {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* 高解像度対応 */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .text-line {
+        text-shadow: 
+            0 0 3px rgba(255, 255, 255, 0.2),
+            0 0 6px rgba(255, 255, 255, 0.1),
+            1px 1px 2px rgba(0, 0, 0, 0.8);
+    }
+}
+
+/* 制御ヒント */
+.control-hint {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 10px 20px;
+    border-radius: 20px;
+    font-size: 12px;
+    opacity: 0.7;
+    font-family: Arial, sans-serif;
+}
+
+/* モバイル対応の調整 */
+@media (max-width: 768px) {
+    .text-container[data-template="scroll"] {
+        width: 95%;
+    }
+    
+    .text-line {
+        font-size: 4vw;
+        max-width: 90%;
+        white-space: normal;
+        text-align: center;
+        word-wrap: break-word;
+    }
+}
+
+/* 縦画面対応 */
+@media (orientation: portrait) and (max-width: 768px) {
+    .text-line {
+        font-size: 5vw;
+        line-height: 1.2;
+    }
+}
+
+/* エネルギー効率の最適化 */
+@media (prefers-reduced-motion: reduce) {
+    .text-line {
+        animation: none;
+        transition: transform 0.3s ease-in-out;
+    }
+    
+    .text-line.fade-enabled {
+        animation: none;
+    }
+}

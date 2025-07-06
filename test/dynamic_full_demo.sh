@@ -183,6 +183,22 @@ for item in "${template_preset_list[@]}"; do
             copy_success=false
         fi
         
+        # 共有アセットファイルをコピー（外部JavaScript参照システム用）
+        if [ -d "contents/html/shared" ]; then
+            mkdir -p "$OUTPUT_DIR/html/shared"
+            cp -r "contents/html/shared/"* "$OUTPUT_DIR/html/shared/" 2>/dev/null || true
+        fi
+        
+        if [ -d "contents/html/assets" ]; then
+            mkdir -p "$OUTPUT_DIR/html/assets"
+            cp -r "contents/html/assets/"* "$OUTPUT_DIR/html/assets/" 2>/dev/null || true
+        fi
+        
+        if [ -d "contents/html/templates" ]; then
+            mkdir -p "$OUTPUT_DIR/html/templates"
+            cp -r "contents/html/templates/"* "$OUTPUT_DIR/html/templates/" 2>/dev/null || true
+        fi
+        
         if [ "$copy_success" = true ]; then
             RESULTS[$index]="✅ 成功"
             DURATIONS[$index]="${EXEC_TIME}秒"

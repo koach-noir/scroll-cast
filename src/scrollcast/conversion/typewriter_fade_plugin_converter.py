@@ -152,6 +152,7 @@ class TypewriterFadePluginConverter(PluginConverterBase):
             dialogue_start = char_timings[0].dialogue_start_ms
             dialogue_end = char_timings[0].dialogue_end_ms
             sentences_timing_data.append({
+                'start_time': dialogue_start,  # 絶対開始時間（auto-playプラグイン用）
                 'dialogue_start': dialogue_start,
                 'dialogue_end': dialogue_end,
                 'dialogue_duration': dialogue_end - dialogue_start,

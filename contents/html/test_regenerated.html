@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrollCast - Railway Scroll Effect (Plugin)</title>
+    <!-- ScrollCast Shared Styles -->
+    <link rel="stylesheet" href="shared/scrollcast-styles.css">
+    <!-- Template Specific Styles -->
+    <link rel="stylesheet" href="templates/railway/railway_scroll/sc-template.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            cursor: pointer;
+        }
+        
+
+        text-container[data-template="railway"] {
+            font-size: 3.7vw;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* デスクトップ表示での固定サイズ */
+        @media (min-width: 768px) {
+            text-container[data-template="railway"] {
+                font-size: 40px;
+                max-width: 600px;
+            }
+        }
+        
+        
+        .control-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<div class="text-container" data-template="railway">
+    <!-- 行要素はテンプレート生成時に動的に挿入される -->
+    <div class="text-line" data-line="0">Hello World!</div>
+        <div class="text-line" data-line="1">This is a test message for</div>
+        <div class="text-line" data-line="2">ScrollCast animation system.</div>
+        <div class="text-line" data-line="3">Welcome to the future of text</div>
+        <div class="text-line" data-line="4">animations.</div>
+        <div class="text-line" data-line="5">Experience smooth and beautiful</div>
+        <div class="text-line" data-line="6">text effects.</div>
+</div>
+
+<div class="control-hint">
+    鉄道方向幕風スクロール • タップ/クリックで再生制御
+</div>
+    
+    <div class="control-hint">
+        鉄道方向幕風スクロール • タップ/クリックで再生制御
+    </div>
+    
+    <!-- ScrollCast Core Library -->
+    <script src="shared/scrollcast-core.js"></script>
+    <script src="assets/auto-play-plugin.js"></script>
+    <script src="assets/railway-display-plugin.js"></script>
+    
+    <script>
+        // Template Integration Layer
+        document.addEventListener('DOMContentLoaded', function() {
+            // タイミングデータ
+            const timingData = [{"text": "Hello World!", "start_time": 0, "fade_in_start": 0, "fade_in_duration": 1000, "static_start": 1000, "static_duration": 3000, "fade_out_start": 4000, "fade_out_duration": 1000, "total_duration": 5000}, {"text": "This is a test message for", "start_time": 4500, "fade_in_start": 0, "fade_in_duration": 1000, "static_start": 1000, "static_duration": 3000, "fade_out_start": 4000, "fade_out_duration": 1000, "total_duration": 5000}, {"text": "ScrollCast animation system.", "start_time": 9000, "fade_in_start": 0, "fade_in_duration": 1000, "static_start": 1000, "static_duration": 3000, "fade_out_start": 4000, "fade_out_duration": 1000, "total_duration": 5000}, {"text": "Welcome to the future of text", "start_time": 13500, "fade_in_start": 0, "fade_in_duration": 1000, "static_start": 1000, "static_duration": 3600, "fade_out_start": 4600, "fade_out_duration": 1000, "total_duration": 5600}, {"text": "animations.", "start_time": 18600, "fade_in_start": 0, "fade_in_duration": 1000, "static_start": 1000, "static_duration": 3000, "fade_out_start": 4000, "fade_out_duration": 1000, "total_duration": 5000}, {"text": "Experience smooth and beautiful", "start_time": 23100, "fade_in_start": 0, "fade_in_duration": 1000, "static_start": 1000, "static_duration": 3600, "fade_out_start": 4600, "fade_out_duration": 1000, "total_duration": 5600}, {"text": "text effects.", "start_time": 28200, "fade_in_start": 0, "fade_in_duration": 1000, "static_start": 1000, "static_duration": 3000, "fade_out_start": 4000, "fade_out_duration": 1000, "total_duration": 5000}];
+            
+            // テンプレート設定
+            const templateConfig = {
+    "template_name": "railway_scroll",
+    "navigation_unit": "line",
+    "required_plugins": [
+        "auto_play",
+        "railway_display"
+    ],
+    "plugin_configs": {
+        "auto_play": {
+            "auto_start": true,
+            "initial_delay": 500
+        },
+        "railway_display": {
+            "element_selector": ".text-line",
+            "animation_duration": 800
+        }
+    }
+};
+            templateConfig.timingData = timingData;
+            
+            // ScrollCastコアで全プラグインを初期化
+            if (window.ScrollCastCore) {
+                window.ScrollCastCore.initializePlugins(templateConfig);
+            }
+        });
+    </script>
+</body>
+</html>

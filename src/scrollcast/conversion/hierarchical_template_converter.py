@@ -22,17 +22,17 @@ class HierarchicalTemplateConverter:
             "typewriter_fade": {
                 "category": "typewriter",
                 "converter_class": TypewriterFadePluginConverter,
-                "template_path": "contents/html/templates/typewriter/typewriter_fade"
+                "template_path": "src/templates/typewriter/typewriter_fade"
             },
             "railway_scroll": {
                 "category": "railway", 
                 "converter_class": RailwayScrollPluginConverter,
-                "template_path": "contents/html/templates/railway/railway_scroll"
+                "template_path": "src/templates/railway/railway_scroll"
             },
             "simple_role": {
                 "category": "scroll",
                 "converter_class": SimpleRolePluginConverter,
-                "template_path": "contents/html/templates/scroll/scroll_role"
+                "template_path": "src/templates/scroll/scroll_role"
             }
         }
         
@@ -45,8 +45,9 @@ class HierarchicalTemplateConverter:
     def convert_ass_to_html(self, ass_file_path: str, html_output_path: str) -> None:
         """ASSファイルを階層テンプレート構造のHTMLに変換"""
         
-        # PluginConverterBaseの完全なHTML生成機能を使用
-        self.data_converter.convert_ass_to_html(ass_file_path, html_output_path)
+        # 新しい外部JavaScript参照システムを使用
+        self.data_converter.parse_ass_file(ass_file_path)
+        self.data_converter.generate_html(html_output_path)
         
         # 統計情報を表示
         timing_data = self._extract_timing_data()
@@ -66,7 +67,7 @@ class HierarchicalTemplateConverter:
     
     def _load_hierarchical_template(self) -> str:
         """階層テンプレート構造からtemplate.htmlを読み込み"""
-        template_path = os.path.join(self.template_info["template_path"], "template.html")
+        template_path = os.path.join(self.template_info["template_path"], "sc-template.html")
         
         if not os.path.exists(template_path):
             raise FileNotFoundError(f"Template file not found: {template_path}")
@@ -282,44 +283,48 @@ class HierarchicalTemplateConverter:
         """contents/html/ からの正しい相対パスに修正"""
         template_info = self.template_info
         
+        # 共通アセットパスを修正
+        html = html.replace('href="../../../assets/scrollcast-styles.css"', 
+                           'href="shared/scrollcast-styles.css"')
+        
         if self.template_name == "typewriter_fade":
             # CSS参照を修正
-            html = html.replace('href="typewriter_fade.css"', 
-                               'href="templates/typewriter/typewriter_fade/typewriter_fade.css"')
+            html = html.replace('href="sc-template.css"', 
+                               'href="templates/typewriter/typewriter_fade/sc-template.css"')
             
             # JavaScript参照を修正
-            html = html.replace('src="../../shared/scrollcast-base.js"', 
-                               'src="templates/shared/scrollcast-base.js"')
-            html = html.replace('src="../shared/typewriter-base.js"', 
-                               'src="templates/typewriter/shared/typewriter-base.js"')
-            html = html.replace('src="typewriter_fade.js"', 
-                               'src="templates/typewriter/typewriter_fade/typewriter_fade.js"')
+            html = html.replace('src="../../../assets/scrollcast-base.js"', 
+                               'src="shared/scrollcast-base.js"')
+            html = html.replace('src="../sc-base.js"', 
+                               'src="templates/typewriter/sc-base.js"')
+            html = html.replace('src="sc-template.js"', 
+                               'src="templates/typewriter/typewriter_fade/sc-template.js"')
         
         elif self.template_name == "railway_scroll":
             # CSS参照を修正
-            html = html.replace('href="railway_scroll.css"', 
-                               'href="templates/railway/railway_scroll/railway_scroll.css"')
+            html = html.replace('href="sc-template.css"', 
+                               'href="templates/railway/railway_scroll/sc-template.css"')
             
             # JavaScript参照を修正
-            html = html.replace('src="../../shared/scrollcast-base.js"', 
-                               'src="templates/shared/scrollcast-base.js"')
-            html = html.replace('src="../shared/railway-base.js"', 
-                               'src="templates/railway/shared/railway-base.js"')
-            html = html.replace('src="railway_scroll.js"', 
-                               'src="templates/railway/railway_scroll/railway_scroll.js"')
+            html = html.replace('src="../../../assets/scrollcast-base.js"', 
+                               'src="shared/scrollcast-base.js"')
+            html = html.replace('src="../sc-base.js"', 
+                               'src="templates/railway/sc-base.js"')
+            html = html.replace('src="sc-template.js"', 
+                               'src="templates/railway/railway_scroll/sc-template.js"')
         
         elif self.template_name == "simple_role":
             # CSS参照を修正
-            html = html.replace('href="scroll_role.css"', 
-                               'href="templates/scroll/scroll_role/scroll_role.css"')
+            html = html.replace('href="sc-template.css"', 
+                               'href="templates/scroll/scroll_role/sc-template.css"')
             
             # JavaScript参照を修正
-            html = html.replace('src="../../shared/scrollcast-base.js"', 
-                               'src="templates/shared/scrollcast-base.js"')
-            html = html.replace('src="../shared/scroll-base.js"', 
-                               'src="templates/scroll/shared/scroll-base.js"')
-            html = html.replace('src="scroll_role.js"', 
-                               'src="templates/scroll/scroll_role/scroll_role.js"')
+            html = html.replace('src="../../../assets/scrollcast-base.js"', 
+                               'src="shared/scrollcast-base.js"')
+            html = html.replace('src="../sc-base.js"', 
+                               'src="templates/scroll/sc-base.js"')
+            html = html.replace('src="sc-template.js"', 
+                               'src="templates/scroll/scroll_role/sc-template.js"')
         
         return html
     

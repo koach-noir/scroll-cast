@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ScrollCast - Simple Role Effect (Plugin)</title>
+    <!-- ScrollCast Shared Styles -->
+    <link rel="stylesheet" href="shared/scrollcast-styles.css">
+    <!-- Template Specific Styles -->
+    <link rel="stylesheet" href="templates/scroll/scroll_role/sc-template.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            cursor: pointer;
+        }
+        
+
+        text-container[data-template="scroll"] {
+            font-size: 3.33vw;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* デスクトップ表示での固定サイズ */
+        @media (min-width: 768px) {
+            text-container[data-template="scroll"] {
+                font-size: 36px;
+                max-width: 800px;
+                margin: 0 auto;
+            }
+        }
+        
+        
+        .control-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<div class="text-container" data-template="scroll">
+    <!-- 行要素はテンプレート生成時に動的に挿入される -->
+    <div class="text-line" data-line="0">Today is a beautiful day.</div>
+        <div class="text-line" data-line="1">I went for a walk in the park.</div>
+        <div class="text-line" data-line="2">The weather was perfect for outdoor</div>
+        <div class="text-line" data-line="3">activities.</div>
+        <div class="text-line" data-line="4">Tomorrow is expected to be rainy.</div>
+        <div class="text-line" data-line="5">I plan to stay home and read a good</div>
+        <div class="text-line" data-line="6">book.</div>
+        <div class="text-line" data-line="7">Maybe I'll also catch up on some movies.</div>
+        <div class="text-line" data-line="8">The weekend is approaching fast.</div>
+        <div class="text-line" data-line="9">I have plans to meet with friends.</div>
+        <div class="text-line" data-line="10">We're thinking about visiting the new</div>
+        <div class="text-line" data-line="11">museum downtown.</div>
+        <div class="text-line" data-line="12">Technology keeps advancing rapidly.</div>
+        <div class="text-line" data-line="13">Artificial intelligence is becoming</div>
+        <div class="text-line" data-line="14">more sophisticated.</div>
+        <div class="text-line" data-line="15">It's changing how we work and live.</div>
+        <div class="text-line" data-line="16">Music has always been part of human</div>
+        <div class="text-line" data-line="17">culture.</div>
+        <div class="text-line" data-line="18">Different genres express different</div>
+        <div class="text-line" data-line="19">emotions.</div>
+        <div class="text-line" data-line="20">Classical music can be very calming and</div>
+        <div class="text-line" data-line="21">peaceful.</div>
+        <div class="text-line" data-line="22">Rock music energizes and motivates</div>
+        <div class="text-line" data-line="23">people.</div>
+        <div class="text-line" data-line="24">Jazz is known for its improvisation and</div>
+        <div class="text-line" data-line="25">creativity.</div>
+        <div class="text-line" data-line="26">Electronic music pushes the boundaries</div>
+        <div class="text-line" data-line="27">of sound.</div>
+        <div class="text-line" data-line="28">Learning a new language opens many</div>
+        <div class="text-line" data-line="29">doors.</div>
+        <div class="text-line" data-line="30">It helps you connect with different</div>
+        <div class="text-line" data-line="31">cultures.</div>
+        <div class="text-line" data-line="32">Travel becomes more meaningful and</div>
+        <div class="text-line" data-line="33">enriching.</div>
+        <div class="text-line" data-line="34">Career opportunities expand</div>
+        <div class="text-line" data-line="35">significantly.</div>
+        <div class="text-line" data-line="36">Books transport us to different worlds.</div>
+        <div class="text-line" data-line="37">Fiction lets our imagination run wild.</div>
+        <div class="text-line" data-line="38">Non-fiction teaches us about reality.</div>
+        <div class="text-line" data-line="39">Biographies inspire us with real</div>
+        <div class="text-line" data-line="40">stories.</div>
+        <div class="text-line" data-line="41">Poetry captures emotions in beautiful</div>
+        <div class="text-line" data-line="42">words.</div>
+        <div class="text-line" data-line="43">Science books expand our understanding</div>
+        <div class="text-line" data-line="44">of the universe.</div>
+</div>
+
+<div class="control-hint">
+    シンプルロール（エンドロール風） • タップ/クリックで再生制御
+</div>
+    
+    <div class="control-hint">
+        シンプルロール（エンドロール風） • タップ/クリックで再生制御
+    </div>
+    
+    <!-- ScrollCast Core Library -->
+    <script src="shared/scrollcast-core.js"></script>
+    <script src="assets/auto-play-plugin.js"></script>
+    <script src="assets/simple-role-display-plugin.js"></script>
+    
+    <script>
+        // Template Integration Layer
+        document.addEventListener('DOMContentLoaded', function() {
+            // タイミングデータ
+            const timingData = [{"text": "Today is a beautiful day.", "start_time": 0, "duration": 6670, "line_index": 0}, {"text": "I went for a walk in the park.", "start_time": 200, "duration": 6670, "line_index": 1}, {"text": "The weather was perfect for outdoor", "start_time": 400, "duration": 6670, "line_index": 2}, {"text": "activities.", "start_time": 600, "duration": 6670, "line_index": 3}, {"text": "Tomorrow is expected to be rainy.", "start_time": 800, "duration": 6670, "line_index": 4}, {"text": "I plan to stay home and read a good", "start_time": 1000, "duration": 6670, "line_index": 5}, {"text": "book.", "start_time": 1200, "duration": 6670, "line_index": 6}, {"text": "Maybe I'll also catch up on some movies.", "start_time": 1400, "duration": 6670, "line_index": 7}, {"text": "The weekend is approaching fast.", "start_time": 1600, "duration": 6670, "line_index": 8}, {"text": "I have plans to meet with friends.", "start_time": 1800, "duration": 6670, "line_index": 9}, {"text": "We're thinking about visiting the new", "start_time": 2000, "duration": 6670, "line_index": 10}, {"text": "museum downtown.", "start_time": 2200, "duration": 6670, "line_index": 11}, {"text": "Technology keeps advancing rapidly.", "start_time": 2400, "duration": 6670, "line_index": 12}, {"text": "Artificial intelligence is becoming", "start_time": 2600, "duration": 6670, "line_index": 13}, {"text": "more sophisticated.", "start_time": 2800, "duration": 6670, "line_index": 14}, {"text": "It's changing how we work and live.", "start_time": 3000, "duration": 6670, "line_index": 15}, {"text": "Music has always been part of human", "start_time": 3200, "duration": 6670, "line_index": 16}, {"text": "culture.", "start_time": 3400, "duration": 6670, "line_index": 17}, {"text": "Different genres express different", "start_time": 3600, "duration": 6670, "line_index": 18}, {"text": "emotions.", "start_time": 3800, "duration": 6670, "line_index": 19}, {"text": "Classical music can be very calming and", "start_time": 4000, "duration": 6670, "line_index": 20}, {"text": "peaceful.", "start_time": 4200, "duration": 6670, "line_index": 21}, {"text": "Rock music energizes and motivates", "start_time": 4400, "duration": 6670, "line_index": 22}, {"text": "people.", "start_time": 4600, "duration": 6670, "line_index": 23}, {"text": "Jazz is known for its improvisation and", "start_time": 4800, "duration": 6670, "line_index": 24}, {"text": "creativity.", "start_time": 5000, "duration": 6670, "line_index": 25}, {"text": "Electronic music pushes the boundaries", "start_time": 5200, "duration": 6670, "line_index": 26}, {"text": "of sound.", "start_time": 5400, "duration": 6670, "line_index": 27}, {"text": "Learning a new language opens many", "start_time": 5600, "duration": 6670, "line_index": 28}, {"text": "doors.", "start_time": 5800, "duration": 6670, "line_index": 29}, {"text": "It helps you connect with different", "start_time": 6000, "duration": 6670, "line_index": 30}, {"text": "cultures.", "start_time": 6200, "duration": 6670, "line_index": 31}, {"text": "Travel becomes more meaningful and", "start_time": 6400, "duration": 6670, "line_index": 32}, {"text": "enriching.", "start_time": 6600, "duration": 6670, "line_index": 33}, {"text": "Career opportunities expand", "start_time": 6800, "duration": 6670, "line_index": 34}, {"text": "significantly.", "start_time": 7000, "duration": 6670, "line_index": 35}, {"text": "Books transport us to different worlds.", "start_time": 7200, "duration": 6670, "line_index": 36}, {"text": "Fiction lets our imagination run wild.", "start_time": 7400, "duration": 6670, "line_index": 37}, {"text": "Non-fiction teaches us about reality.", "start_time": 7600, "duration": 6670, "line_index": 38}, {"text": "Biographies inspire us with real", "start_time": 7800, "duration": 6670, "line_index": 39}, {"text": "stories.", "start_time": 8000, "duration": 6670, "line_index": 40}, {"text": "Poetry captures emotions in beautiful", "start_time": 8200, "duration": 6670, "line_index": 41}, {"text": "words.", "start_time": 8400, "duration": 6670, "line_index": 42}, {"text": "Science books expand our understanding", "start_time": 8600, "duration": 6670, "line_index": 43}, {"text": "of the universe.", "start_time": 8800, "duration": 6670, "line_index": 44}];
+            
+            // テンプレート設定
+            const templateConfig = {
+    "template_name": "simple_role",
+    "navigation_unit": "line",
+    "required_plugins": [
+        "auto_play",
+        "simple_role_display"
+    ],
+    "plugin_configs": {
+        "auto_play": {
+            "auto_start": true,
+            "initial_delay": 1000
+        },
+        "simple_role_display": {
+            "element_selector": ".text-line",
+            "scroll_duration": 8000,
+            "continuous_display": true,
+            "fade_effect": true
+        }
+    }
+};
+            templateConfig.timingData = timingData;
+            
+            // ScrollCastコアで全プラグインを初期化
+            if (window.ScrollCastCore) {
+                window.ScrollCastCore.initializePlugins(templateConfig);
+            }
+        });
+    </script>
+</body>
+</html>

@@ -37,7 +37,7 @@ class SimpleRolePluginConverter(PluginConverterBase):
                     "initial_delay": 1000
                 },
                 "simple_role_display": {
-                    "element_selector": ".scroll-line",
+                    "element_selector": ".text-line",
                     "scroll_duration": 8000,
                     "continuous_display": True,
                     "fade_effect": True
@@ -105,17 +105,40 @@ class SimpleRolePluginConverter(PluginConverterBase):
         return json.dumps(timing_data)
     
     def _build_template_html(self) -> str:
-        """テンプレート固有HTML"""
-        # 行ごとのHTML要素を生成
-        lines_html = []
+        """テンプレート固有HTML（Template-Based Generation）"""
+        # Template file path
+        template_path = "src/templates/scroll/scroll_role/sc-template.html"
         
+        # Load template content
+        template_content = self._load_template_file(template_path)
+        
+        # Generate lines HTML with common selectors
+        lines_html = []
         for timing in self.line_timings:
             lines_html.append(
-                f'<div class="role-line" data-line="{timing.line_number}">{timing.text}</div>'
+                f'<div class="text-line" data-line="{timing.line_number}">{timing.text}</div>'
             )
         
-        content_html = '\n        '.join(lines_html)
-        return f"""    <div class="role-container">
+        lines_content = '\n        '.join(lines_html)
+        
+        # Replace placeholder with generated content
+        return template_content.replace('{{LINES_HTML}}', lines_content)
+    
+    def _load_template_file(self, template_path: str) -> str:
+        """Load template file content"""
+        import os
+        try:
+            with open(template_path, 'r', encoding='utf-8') as f:
+                return f.read()
+        except FileNotFoundError:
+            # Fallback to legacy generation if template not found
+            lines_html = []
+            for timing in self.line_timings:
+                lines_html.append(
+                    f'<div class="text-line" data-line="{timing.line_number}">{timing.text}</div>'
+                )
+            content_html = '\n        '.join(lines_html)
+            return f"""    <div class="text-container" data-template="scroll">
         {content_html}
     </div>"""
     
@@ -130,7 +153,7 @@ class SimpleRolePluginConverter(PluginConverterBase):
     
     def _get_responsive_css_class(self) -> str:
         """レスポンシブCSS用のクラス名を返す"""
-        return "role-container"
+        return "text-container[data-template=\"scroll\"]"
     
     def _get_print_template_name(self) -> str:
         """ログ出力用のテンプレート名を返す"""

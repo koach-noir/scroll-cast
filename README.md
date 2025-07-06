@@ -1,41 +1,50 @@
 # scroll-cast
 
-Pure text animation generation system for creating engaging, readable content with professional-grade animations.
+Pure text animation generation system with external JavaScript reference architecture for high-performance, modular text animations.
 
 ## Overview
 
-`scroll-cast` is a specialized content generation system that creates HTML-based text animations with precise timing, smooth effects, and mobile-responsive design. It focuses exclusively on text animation generation, following a clean 5-layer architecture for optimal performance and maintainability.
+`scroll-cast` is a specialized content generation system that creates HTML-based text animations with precise timing, smooth effects, and mobile-responsive design. The system features an **external JavaScript reference architecture** that eliminates code duplication while maintaining full animation functionality and supporting emotional decoration CSS integration.
 
 ## Architecture
 
-### 5-Layer Architecture
+### 5-Layer Architecture with External Reference System
 ```
-Text Input → Boxing → Coloring → Packing → Rendering → HTML Output
+Text Input → Boxing → Coloring → Packing → Rendering → External Assets → HTML Output
 ```
 
 - **Boxing**: Text processing and formatting for animation
-- **Coloring**: Animation timing and effect generation
+- **Coloring**: Animation timing and effect generation  
 - **Packing**: ASS subtitle generation
-- **Rendering**: HTML/CSS/JS conversion
+- **Rendering**: HTML/CSS/JS conversion with external asset deployment
 - **Orchestrator**: Animation workflow coordination
+- **External Assets**: Modular JavaScript plugins and shared libraries
 
 ## Features
 
+### External JavaScript Reference Architecture
+- **70-90% file size reduction** through external asset deployment
+- **Modular plugin system** with auto-play, railway-display, and simple-role plugins
+- **Shared library architecture** with scrollcast-core.js foundation
+- **Asset manifest system** for reliable deployment tracking
+
 ### Animation Templates
-- **Typewriter**: Character-by-character reveal with customizable timing
-- **Railway**: Scrolling text with smooth transitions
-- **Scroll**: Vertical scrolling with role-based styling
+- **Typewriter**: Character-by-character reveal with fade effects
+- **Railway**: Scrolling text with smooth train-style transitions  
+- **Simple Role**: End-credit style vertical scrolling
 
 ### Output Formats
-- **HTML**: Interactive web animations
+- **HTML**: Interactive web animations with external asset references
 - **ASS**: Advanced SubStation Alpha subtitle format
-- **CSS/JS**: Modular animation components
+- **CSS/JS**: Modular external plugins and template-specific stylesheets
 
-### Performance
+### Performance & Integration
 - **209,444 characters/second** processing capability
 - **91.5/100** quality scores with comprehensive testing
-- **Mobile-responsive** design
+- **Mobile-responsive** design with media queries
 - **Type-safe** Pydantic validation
+- **Emotional decoration CSS** integration support
+- **CSS Override Architecture** for decoration system compatibility
 
 ## Installation
 
@@ -54,14 +63,17 @@ pip install -e .
 ## Quick Start
 
 ```bash
-# Generate typewriter animation
-scroll-cast generate "Hello World" --template typewriter --output output.html
+# Generate railway scroll animation with announcement preset
+./test/generate_scrollcast_with_config.sh railway_scroll announcement input.txt output_name
 
-# Generate railway scroll animation
-scroll-cast generate "Your content here" --template railway --output output.html
+# Generate typewriter animation with cinematic preset  
+./test/generate_scrollcast_with_config.sh typewriter_fade cinematic input.txt output_name
 
-# Generate with custom config
-scroll-cast generate "Custom text" --config config/typewriter_fade.yaml --output output.html
+# Generate simple role credits animation
+./test/generate_scrollcast_with_config.sh simple_role credits input.txt output_name
+
+# Run full integration test (generates all templates)
+./test/dynamic_full_demo.sh
 ```
 
 ## Project Structure
@@ -70,61 +82,134 @@ scroll-cast generate "Custom text" --config config/typewriter_fade.yaml --output
 scroll-cast/
 ├── src/
 │   └── scrollcast/
-│       ├── boxing/          # Text processing
-│       ├── coloring/        # Animation effects
-│       ├── packing/         # ASS generation
-│       ├── rendering/       # HTML conversion
-│       └── orchestrator/    # Workflow coordination
-├── templates/
-│   ├── typewriter/         # Typewriter animation templates
-│   ├── railway/            # Railway scroll templates
-│   └── scroll/             # Scroll animation templates
-├── config/                 # Configuration files
-├── docs/                   # Documentation
-└── tests/                  # Test suite
+│       ├── boxing/          # Text processing and formatting
+│       ├── coloring/        # Animation timing and effects
+│       ├── packing/         # ASS subtitle generation
+│       ├── rendering/       # HTML/CSS/JS conversion
+│       ├── orchestrator/    # Workflow coordination
+│       ├── conversion/      # Plugin-based converters
+│       │   ├── plugin_converter_base.py      # External reference system
+│       │   ├── railway_scroll_plugin_converter.py
+│       │   ├── simple_role_plugin_converter.py
+│       │   └── typewriter_fade_plugin_converter.py
+│       └── deployment/      # Asset deployment system
+│           └── file_deployer.py              # External asset management
+├── src/templates/          # Template source files
+│   ├── railway/
+│   │   └── railway_scroll/
+│   │       ├── sc-template.html
+│   │       ├── sc-template.css               # Template-specific styles
+│   │       └── sc-template.js                # Template-specific logic
+│   ├── scroll/scroll_role/
+│   └── typewriter/typewriter_fade/
+├── config/                 # YAML configuration files  
+│   ├── railway_scroll.yaml
+│   ├── simple_role.yaml
+│   └── typewriter_fade.yaml
+├── contents/html/          # Generated output with external assets
+│   ├── shared/             # Shared library files
+│   │   ├── scrollcast-core.js               # Core plugin system
+│   │   └── scrollcast-styles.css            # Base styles
+│   ├── assets/             # Plugin JavaScript files
+│   │   ├── auto-play-plugin.js              # Timeline management
+│   │   ├── railway-display-plugin.js        # Railway animations
+│   │   └── simple-role-display-plugin.js    # Scroll animations
+│   └── templates/          # Template-specific assets
+│       └── railway/railway_scroll/
+│           ├── sc-template.css               # External CSS
+│           └── sc-template.js                # External JS
+├── test/                   # Integration test system
+│   ├── dynamic_full_demo.sh                 # Full template test
+│   └── generate_scrollcast_with_config.sh   # Single template test
+└── docs/                   # Documentation and ADRs
 ```
 
-## CSS Class Standards
+## CSS Class Standards & External Asset Architecture
 
-scroll-cast follows standardized CSS class naming for integration with decoration systems:
+scroll-cast follows standardized CSS class naming and external asset architecture for optimal performance and decoration system integration:
+
+### Unified CSS Classes
+```css
+/* Unified class structure across all templates */
+.text-container[data-template="railway"]  /* Template-specific container */
+.text-container[data-template="typewriter"]
+.text-container[data-template="scroll"]
+
+.text-line                /* Individual text lines */
+.text-line[data-line="0"] /* Line-specific targeting */
+```
+
+### External Asset References
+```html
+<!-- Generated HTML structure -->
+<!DOCTYPE html>
+<html>
+<head>
+    <!-- Shared base styles -->
+    <link rel="stylesheet" href="shared/scrollcast-styles.css">
+    <!-- Template-specific styles -->
+    <link rel="stylesheet" href="templates/railway/railway_scroll/sc-template.css">
+</head>
+<body>
+    <div class="text-container" data-template="railway">
+        <div class="text-line" data-line="0">Content here</div>
+    </div>
+    
+    <!-- External JavaScript architecture -->
+    <script src="shared/scrollcast-core.js"></script>
+    <script src="assets/auto-play-plugin.js"></script>
+    <script src="assets/railway-display-plugin.js"></script>
+</body>
+</html>
+```
+
+### CSS Override Architecture for Decoration Systems
 
 ```css
-/* Animation elements */
-.typewriter-char          /* Individual character */
-.typewriter-sentence      /* Sentence container */
-.typewriter-container     /* Main container */
+/* Template CSS includes decoration hooks */
+.text-container[data-template="railway"].decoration-enhanced {
+    /* Decoration system overrides */
+}
 
-.railway-line            /* Railway display line */
-.railway-container       /* Railway container */
+.text-line.decoration-enhanced {
+    /* Enhanced styling from emotional decoration */
+}
 
-.scroll-line             /* Scroll text line */
-.scroll-container        /* Scroll container */
-```
-
-## Integration with Decoration Systems
-
-scroll-cast is designed to work seamlessly with visual decoration systems through CSS override architecture:
-
-```html
-<!-- Base animation styles -->
-<link rel="stylesheet" href="templates/typewriter/typewriter.css">
-
-<!-- Decoration enhancements (loaded later = higher priority) -->
-<link rel="stylesheet" href="decorations/theme.css">
+/* CSS Custom Properties for decoration integration */
+.text-line {
+    --decoration-filter: none;
+    --decoration-background: transparent;
+    filter: var(--decoration-filter);
+    background: var(--decoration-background);
+}
 ```
 
 ## Development
 
 ### Running Tests
 ```bash
-# Run all tests
+# Run integration test for all templates
+./test/dynamic_full_demo.sh
+
+# Test specific template and preset
+./test/generate_scrollcast_with_config.sh railway_scroll announcement test/sample_eng.txt test_output
+
+# Run Python unit tests
 pytest tests/
 
 # Run with coverage
 pytest --cov=scrollcast tests/
+```
 
-# Run specific test category
-pytest tests/test_animation.py
+### External Asset System Testing
+```bash
+# Verify asset deployment
+ls contents/html/shared/        # Core library files
+ls contents/html/assets/        # Plugin JavaScript files  
+ls contents/html/templates/     # Template-specific assets
+
+# Check asset manifest
+cat contents/html/asset-manifest.json
 ```
 
 ### Code Quality
