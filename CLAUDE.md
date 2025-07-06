@@ -95,6 +95,12 @@ Text Input → Boxing → Coloring → Packing → Rendering → HTML Output
 2. CSS `will-change` プロパティの適切な使用
 3. JavaScript処理の最適化
 4. メモリリーク検出
+
+### 外部CSS統合問題
+1. `config/external_css_includes.yaml`設定ファイル確認
+2. emotional-decorationシステムとの連携状況チェック
+3. CSSファイルパス解決問題の確認
+4. HTMLジェネレーターでの外部CSS読み込み確認
 ```
 
 ## 🔧 Claude Code Optimization
@@ -141,12 +147,14 @@ scroll-castで以下の問題を調査・修正してください:
 1. **アーキテクチャ理解**
    - docs/adr/ADR-012-external-decoration-injection-system.md
    - docs/adr/ADR-013-dual-repository-architecture.md
+   - docs/adr/ADR-014-external-css-configuration-system.md
    - docs/CSS_NAMING_STANDARDS.md
 
 2. **現在の実装状況**
    - 3つのテンプレート（typewriter, railway, scroll）
    - HTML生成テストシステム完備
    - モックHTML生成機能
+   - 外部CSS設定システム（config/external_css_includes.yaml）
 
 3. **制約事項再確認**
    - CSS Override Architecture要件
@@ -179,6 +187,8 @@ scroll-castで以下の問題を調査・修正してください:
 - **README.md**: プロジェクト概要とクイックスタート
 - **docs/CSS_NAMING_STANDARDS.md**: CSS命名規則詳細
 - **docs/adr/**: アーキテクチャ決定記録
+- **docs/adr/ADR-014-external-css-configuration-system.md**: 外部CSS設定システム実装ガイド
+- **config/external_css_includes.yaml**: 外部CSS統合設定ファイル
 - **test/**: テストシステムと実行例
 
 ### 関連プロジェクト
@@ -224,6 +234,8 @@ scroll-castで以下の問題を調査・修正してください:
 ### 統合テスト
 - [ ] CSS Override機構の動作確認
 - [ ] emotional-decorationとの組み合わせテスト
+- [ ] 外部CSS設定システム（external_css_includes.yaml）の動作確認
+- [ ] 生成されたHTMLでの外部CSSリンク検証
 - [ ] ブラウザでのアニメーション表示確認
 
 ### 回帰テスト

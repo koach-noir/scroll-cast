@@ -1,0 +1,33 @@
+# External CSS Includes Configuration
+# 外部CSS統合設定 - emotional-decoration等の外部システムから提供されるCSSファイル
+version: "1.0.0"
+description: "Configuration for external CSS files to be included in generated HTML"
+author: "TextStream Integration Team"
+
+# Emotional Decoration System CSS Files
+# emotional-decorationシステムから提供される装飾用CSSファイル
+emotional_decoration:
+  enabled: true
+  base_path: "../css/"
+  files:
+    - name: "text-color-simple.css"
+      description: "Template-specific text color enhancement"
+      required: true
+    - name: "scroll-cast-text-color-enhancement.css" 
+      description: "Advanced color and visual effects"
+      required: false
+
+# Future external systems can be added here
+# 将来の外部システム用セクション
+future_systems:
+  # Example:
+  # visual_effects:
+  #   enabled: false
+  #   base_path: "../effects/"
+  #   files: []
+
+# Global settings
+settings:
+  auto_discovery: false  # 自動CSS発見機能（将来実装予定）
+  include_comments: true # HTMLコメントを含めるかどうか
+  order_priority: ["emotional_decoration"]  # 読み込み順序

@@ -1,12 +1,12 @@
 {
   "deployed_assets": [
-    "typewriter-display-plugin.js",
-    "templates/typewriter/sc-base.js",
-    "templates/typewriter/typewriter_fade/sc-template.js",
-    "scrollcast-core.js",
+    "templates/typewriter/typewriter_fade/sc-template.css",
     "auto-play-plugin.js",
-    "templates/typewriter/typewriter_fade/sc-template.css"
+    "scrollcast-core.js",
+    "typewriter-display-plugin.js",
+    "templates/typewriter/typewriter_fade/sc-template.js",
+    "templates/typewriter/sc-base.js"
   ],
-  "deployment_timestamp": 1751784381.4293811,
+  "deployment_timestamp": 1751808591.8442369,
   "total_files": 6
 }

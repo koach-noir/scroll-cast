@@ -8,6 +8,10 @@
     <link rel="stylesheet" href="shared/scrollcast-styles.css">
     <!-- Template Specific Styles -->
     <link rel="stylesheet" href="templates/railway/railway_scroll/sc-template.css">
+    <!-- Template-specific text color enhancement -->
+    <link rel="stylesheet" href="../css/text-color-simple.css">
+    <!-- Advanced color and visual effects -->
+    <link rel="stylesheet" href="../css/scroll-cast-text-color-enhancement.css">
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -22,14 +26,14 @@
         }
         
 
-        text-container[data-template="railway"] {
+        .text-container[data-template="railway"] {
             font-size: 3.89vw;
             font-family: Arial, sans-serif;
         }
         
         /* デスクトップ表示での固定サイズ */
         @media (min-width: 768px) {
-            text-container[data-template="railway"] {
+            .text-container[data-template="railway"] {
                 font-size: 42px;
                 max-width: 600px;
             }

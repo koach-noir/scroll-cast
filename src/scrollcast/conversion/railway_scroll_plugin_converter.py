@@ -182,7 +182,7 @@ class RailwayScrollPluginConverter(PluginConverterBase):
     
     def _get_responsive_css_class(self) -> str:
         """レスポンシブCSS用のクラス名を返す"""
-        return "text-container[data-template=\"railway\"]"
+        return ".text-container[data-template=\"railway\"]"
     
     def _get_print_template_name(self) -> str:
         """ログ出力用のテンプレート名を返す"""

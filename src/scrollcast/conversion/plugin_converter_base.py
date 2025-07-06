@@ -5,8 +5,9 @@ Base class for Plugin-based ASS to HTML converters
 
 import re
 import os
+import yaml
 from abc import ABC, abstractmethod
-from typing import Dict, Any
+from typing import Dict, Any, List
 from .utils import ASSMetadata, HTMLTemplateBuilder
 from .plugin_system import TemplateConfig, TemplateComposer
 from ..deployment.file_deployer import FileDeployer
@@ -197,7 +198,17 @@ class PluginConverterBase(ABC):
             return ""
         
         css_path = f"templates/{template_category}/{template_name}/sc-template.css"
-        return f'    <!-- Template Specific Styles -->\n    <link rel="stylesheet" href="{css_path}">'
+        links = [
+            '    <!-- Template Specific Styles -->',
+            f'    <link rel="stylesheet" href="{css_path}">'
+        ]
+        
+        # 外部CSS設定から追加のリンクを取得
+        external_css_links = self._get_external_css_links()
+        if external_css_links:
+            links.extend(external_css_links)
+        
+        return '\n'.join(links)
     
     def _build_html_content_with_external_js(self, template_config: TemplateConfig, timing_data: str) -> str:
         """外部JavaScript参照版のHTMLコンテンツを生成"""
@@ -292,6 +303,47 @@ class PluginConverterBase(ABC):
         elif template_name == "simple_role":
             return "scroll_role"
         return ""
+    
+    def _load_external_css_config(self) -> Dict[str, Any]:
+        """外部CSS設定ファイルを読み込む"""
+        config_path = os.path.join(
+            os.path.dirname(__file__), 
+            "..", "..", "..", 
+            "config", 
+            "external_css_includes.yaml"
+        )
+        
+        try:
+            with open(config_path, 'r', encoding='utf-8') as f:
+                return yaml.safe_load(f)
+        except (FileNotFoundError, yaml.YAMLError) as e:
+            print(f"⚠️  外部CSS設定読み込み警告: {e}")
+            return {}
+    
+    def _get_external_css_links(self) -> List[str]:
+        """外部CSS設定から必要なCSSリンクを取得"""
+        config = self._load_external_css_config()
+        links = []
+        
+        if not config:
+            return []
+        
+        # emotional_decorationセクションを処理
+        emo_deco = config.get('emotional_decoration', {})
+        if emo_deco.get('enabled', False):
+            base_path = emo_deco.get('base_path', '../css/')
+            files = emo_deco.get('files', [])
+            
+            for file_config in files:
+                if isinstance(file_config, dict):
+                    file_name = file_config.get('name')
+                    description = file_config.get('description', '')
+                    if file_name:
+                        if config.get('settings', {}).get('include_comments', True):
+                            links.append(f'    <!-- {description} -->')
+                        links.append(f'    <link rel="stylesheet" href="{base_path}{file_name}">')
+        
+        return links
     
     def convert_ass_to_html(self, ass_file_path: str, html_output_path: str) -> None:
         """ASS→HTML変換の一括処理（共通処理）"""
