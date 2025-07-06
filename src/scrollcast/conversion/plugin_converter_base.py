@@ -141,6 +141,9 @@ class PluginConverterBase(ABC):
         """レスポンシブCSS設定（共通処理）"""
         css_class = self._get_responsive_css_class()
         
+        # CSS セレクターに . を追加（クラスセレクターとして正しく動作させるため）
+        css_selector = f".{css_class}" if not css_class.startswith('.') else css_class
+        
         # SimpleRoleの場合は追加のCSS設定
         additional_css = ""
         if "scroll" in css_class:
@@ -155,14 +158,14 @@ class PluginConverterBase(ABC):
                 max-width: 600px;"""
         
         return f"""
-        {css_class} {{
+        {css_selector} {{
             font-size: {self.metadata.responsive_font_size}vw;
             font-family: {self.metadata.font_family}, sans-serif;
         }}
         
         /* デスクトップ表示での固定サイズ */
         @media (min-width: 768px) {{
-            {css_class} {{
+            {css_selector} {{
                 font-size: {self.metadata.font_size}px;{additional_css}
             }}
         }}

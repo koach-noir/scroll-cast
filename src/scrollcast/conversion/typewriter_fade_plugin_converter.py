@@ -42,8 +42,8 @@ class TypewriterFadePluginConverter(PluginConverterBase):
                     "initial_delay": 500
                 },
                 "typewriter_display": {
-                    "element_selector": ".typewriter-sentence",
-                    "char_selector": ".typewriter-char"
+                    "element_selector": ".text-sentence, .typewriter-sentence",
+                    "char_selector": ".text-char, .typewriter-char"
                 }
             }
         )
@@ -186,12 +186,12 @@ class TypewriterFadePluginConverter(PluginConverterBase):
             
             for timing in sorted_chars:
                 sentence_chars.append(
-                    f'<span class="typewriter-char" data-char-index="{len(sentence_chars)}" id="char-{char_id}">{timing.char}</span>'
+                    f'<span class="text-char typewriter-char" data-char-index="{len(sentence_chars)}" id="char-{char_id}">{timing.char}</span>'
                 )
                 char_id += 1
             
             sentences_html.append(
-                f'<div class="typewriter-sentence" data-sentence="{sentence_id}">{"".join(sentence_chars)}</div>'
+                f'<div class="text-sentence typewriter-sentence" data-sentence="{sentence_id}">{"".join(sentence_chars)}</div>'
             )
         
         content_html = '\n        '.join(sentences_html)

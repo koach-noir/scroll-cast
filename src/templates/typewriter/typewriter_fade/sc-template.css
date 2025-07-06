@@ -3,7 +3,7 @@
    ============================================================================ */
 
 /* Main container - follows scroll-cast naming standards */
-.typewriter-container {
+.text-container[data-template="typewriter"] {
     position: fixed;
     top: 50%;
     left: 50%;
@@ -19,19 +19,20 @@
 
 /* デスクトップ表示での固定サイズ */
 @media (min-width: 768px) {
-    .typewriter-container {
+    .text-container[data-template="typewriter"] {
         font-size: 64px;
         max-width: 600px;
     }
 }
 
-/* Sentence container - follows scroll-cast naming standards */
+/* Sentence container - unified scroll-cast naming standards */
+.text-sentence,
 .typewriter-sentence {
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    white-space: normal;
+    white-space: pre-wrap; /* Preserve spaces and allow line breaks */
     word-wrap: break-word;
     max-width: 100%;
     opacity: 1;
@@ -39,11 +40,13 @@
 }
 
 /* アクティブな文 */
+.text-sentence.active,
 .typewriter-sentence.active {
     display: block;
 }
 
-/* Individual character - follows scroll-cast naming standards */
+/* Individual character - unified scroll-cast naming standards */
+.text-char,
 .typewriter-char {
     opacity: 0;
     transform: scale(0.8);
@@ -52,12 +55,14 @@
 }
 
 /* 表示された文字 */
+.text-char.visible,
 .typewriter-char.visible {
     opacity: 1;
     transform: scale(1);
 }
 
 /* フェード効果の強化 */
+.text-char,
 .typewriter-char {
     /* フェード効果の基本設定 */
     will-change: opacity, transform;
@@ -77,11 +82,13 @@
 }
 
 /* 文字に適用される動的アニメーション */
+.text-char.fade-in,
 .typewriter-char.fade-in {
     animation: fadeInScale 0.2s ease-in-out forwards;
 }
 
 /* 文のフェード効果 */
+.text-sentence,
 .typewriter-sentence {
     transition: opacity 0.3s ease-in-out;
 }
