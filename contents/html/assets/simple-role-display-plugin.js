@@ -36,16 +36,27 @@ window.SimpleRoleDisplayPlugin = {
     },
     
     animateScrollLine: function(line, sequenceData) {
-        const duration = sequenceData.duration || 3000;
+        const duration = sequenceData.duration || 8000;
         
-        line.animate([
-            { opacity: 0, transform: 'translateY(100vh)' },
-            { opacity: 1, transform: 'translateY(0)' },
-            { opacity: 0, transform: 'translateY(-100vh)' }
-        ], {
-            duration: duration,
-            easing: 'ease-in-out',
-            fill: 'forwards'
-        });
+        line.style.display = 'block';
+        line.style.position = 'fixed';
+        line.style.left = '50%';
+        line.style.top = '50%';
+        line.style.zIndex = '100';
+        line.style.transform = 'translate(-50%, -50%) translateY(100vh)';
+        line.style.opacity = '1';
+        
+        // エンドロール風アニメーション開始
+        setTimeout(() => {
+            line.style.transition = 'transform 8s linear';
+            line.style.transform = 'translate(-50%, -50%) translateY(-100vh)';
+            
+            // 画面を完全に通過した後に非表示
+            setTimeout(() => {
+                line.style.display = 'none';
+                line.style.transition = '';
+                line.style.transform = '';
+            }, 8000);
+        }, 50);
     }
 };
