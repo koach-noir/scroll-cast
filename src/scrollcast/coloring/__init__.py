@@ -9,6 +9,8 @@ from .typewriter_fade_paragraph import TypewriterFadeParagraphTemplate
 from .railway_scroll import RailwayScrollTemplate
 from .railway_scroll_paragraph import RailwayScrollParagraphTemplate
 from .simple_role import SimpleRoleTemplate
+from .revolver_up import RevolverUpTemplate
+from .revolver_up_paragraph import RevolverUpParagraphTemplate
 
 __all__ = [
     "BaseTemplate",
@@ -20,4 +22,6 @@ __all__ = [
     "RailwayScrollTemplate",
     "RailwayScrollParagraphTemplate",
     "SimpleRoleTemplate",
+    "RevolverUpTemplate",
+    "RevolverUpParagraphTemplate",
 ]

@@ -60,6 +60,18 @@ class TemplateEngine:
             self.register_template(SimpleRoleTemplate())
         except ImportError as e:
             print(f"Warning: Failed to import SimpleRoleTemplate: {e}")
+        
+        try:
+            from ..coloring.revolver_up import RevolverUpTemplate
+            self.register_template(RevolverUpTemplate())
+        except ImportError as e:
+            print(f"Warning: Failed to import RevolverUpTemplate: {e}")
+        
+        try:
+            from ..coloring.revolver_up_paragraph import RevolverUpParagraphTemplate
+            self.register_template(RevolverUpParagraphTemplate())
+        except ImportError as e:
+            print(f"Warning: Failed to import RevolverUpParagraphTemplate: {e}")
     
     def register_template(self, template: BaseTemplate):
         """テンプレートを登録
@@ -175,7 +187,7 @@ class TemplateEngine:
             ass_effects = template.generate_ass_effects(processed_text, **template_specific_params)
             
             # 新しいテンプレートは既に完全なASSファイルを生成する
-            if template_name in ["railway_scroll", "typewriter_fade", "railway_scroll_paragraph", "typewriter_fade_paragraph"]:
+            if template_name in ["railway_scroll", "typewriter_fade", "railway_scroll_paragraph", "typewriter_fade_paragraph", "revolver_up", "revolver_up_paragraph"]:
                 ass_content = ass_effects
             else:
                 # 将来の他のテンプレート用にヘッダーを追加する処理を残す

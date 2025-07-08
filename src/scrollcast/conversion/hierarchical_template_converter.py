@@ -23,22 +23,22 @@ class HierarchicalTemplateConverter:
             "typewriter_fade": {
                 "category": "typewriter",
                 "converter_class": TypewriterFadePluginConverter,
-                "template_path": "src/templates/typewriter/typewriter_fade"
+                "template_path": os.path.join(os.path.dirname(__file__), "..", "..", "web", "templates", "typewriter", "typewriter_fade")
             },
             "railway_scroll": {
                 "category": "railway", 
                 "converter_class": RailwayScrollPluginConverter,
-                "template_path": "src/templates/railway/railway_scroll"
+                "template_path": os.path.join(os.path.dirname(__file__), "..", "..", "web", "templates", "railway", "railway_scroll")
             },
             "simple_role": {
                 "category": "scroll",
                 "converter_class": SimpleRolePluginConverter,
-                "template_path": "src/templates/scroll/scroll_role"
+                "template_path": os.path.join(os.path.dirname(__file__), "..", "..", "web", "templates", "scroll", "scroll_role")
             },
             "revolver_up": {
                 "category": "scroll",
                 "converter_class": RevolverUpPluginConverter,
-                "template_path": "src/templates/scroll/revolver_up"
+                "template_path": os.path.join(os.path.dirname(__file__), "..", "..", "web", "templates", "scroll", "revolver_up")
             }
         }
         

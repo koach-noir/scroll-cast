@@ -305,7 +305,11 @@ class PluginConverterBase(ABC):
             return "railway_scroll"
         elif template_name == "simple_role":
             return "scroll_role"
-        return ""
+        elif template_name == "revolver_up":
+            return "revolver_up"
+        else:
+            # デフォルトとして元のテンプレート名を返す
+            return template_name
     
     def _load_external_css_config(self) -> Dict[str, Any]:
         """外部CSS設定ファイルを読み込む"""

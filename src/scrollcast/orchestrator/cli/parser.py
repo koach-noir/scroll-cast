@@ -102,8 +102,8 @@ class CLIArgumentParser:
         # 共通オプション
         parser.add_argument(
             '--output', '-o',
-            default='output-default/web/output.html',
-            help='出力HTMLファイル名 (デフォルト: %(default)s)'
+            default='output-default/output',
+            help='出力ファイル名 (拡張子で自動判定: .html/.mp4/.ass, デフォルト: %(default)s.html)'
         )
         
         parser.add_argument(
@@ -140,6 +140,12 @@ class CLIArgumentParser:
             '--ass-only',
             action='store_true',
             help='ASSファイルのみ生成（HTMLファイルを生成しない）'
+        )
+        
+        parser.add_argument(
+            '--video-only',
+            action='store_true',
+            help='動画ファイルのみ生成（HTMLファイルを生成しない）'
         )
         
         parser.add_argument(
