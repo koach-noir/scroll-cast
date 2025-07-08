@@ -47,9 +47,13 @@ def main():
         else:
             resolution_tuple = tuple(map(int, resolution.split('x')))
         
+        # 出力ディレクトリの作成
+        os.makedirs(os.path.dirname(output_path), exist_ok=True)
+        
         if ass_only:
             # ASSファイルのみ生成
             ass_path = ass_output or f"{os.path.splitext(output_path)[0]}.ass"
+            os.makedirs(os.path.dirname(ass_path), exist_ok=True)
             success = engine.generate_subtitle(
                 template_name=template_name,
                 text=text,
@@ -86,7 +90,15 @@ def main():
         
         else:
             # HTML + ASS生成
-            ass_path = ass_output or f"{os.path.splitext(output_path)[0]}.ass"
+            if ass_output:
+                ass_path = ass_output
+            else:
+                # デフォルト: output-default/ass/ に配置
+                base_name = os.path.splitext(os.path.basename(output_path))[0]
+                ass_path = f"output-default/ass/{base_name}.ass"
+            
+            # ASS出力ディレクトリの作成
+            os.makedirs(os.path.dirname(ass_path), exist_ok=True)
             
             # ASS生成
             success_ass = engine.generate_subtitle(
