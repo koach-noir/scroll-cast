@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{TITLE}}</title>
+    <!-- ScrollCast Shared Styles -->
+    <link rel="stylesheet" href="shared/scrollcast-styles.css">
+    <!-- Template Specific Styles -->
+    <link rel="stylesheet" href="templates/scroll/revolver_up/sc-template.css">
+</head>
+<body>
+    <!-- Unified CSS Class Structure -->
+    <div class="text-container" data-template="revolver_up">
+        <div class="revolver-viewport">
+            {{CONTENT_HTML}}
+        </div>
+    </div>
+    
+    <!-- External JavaScript Architecture -->
+    <script src="shared/scrollcast-core.js"></script>
+    <script src="assets/auto-play-plugin.js"></script>
+    <script src="assets/revolver-up-display-plugin.js"></script>
+    
+    <!-- Template Configuration -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // ¿¤ßó°Çü¿
+            const timingData = {{TIMING_DATA}};
+            
+            // Æó×ìüÈ-š
+            const templateConfig = {{TEMPLATE_CONFIG}};
+            templateConfig.timingData = timingData;
+            
+            // ScrollCast³¢gh×é°¤ó’
+            if (window.ScrollCastCore) {
+                window.ScrollCastCore.initializePlugins(templateConfig);
+            }
+        });
+    </script>
+</body>
+</html>

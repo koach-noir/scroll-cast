@@ -1,0 +1,80 @@
+template_name: "revolver_up"
+category: "scroll"
+description: "リボルバーアップアニメーション - 左寄せ表示で中央行が拡大、文字数に応じた待機時間でスライドアップ"
+
+# デフォルトアニメーションパラメータ
+animation:
+  char_display_duration: 0.3  # 文字あたりの表示時間（秒）
+  slide_duration: 0.8         # スライドアニメーション時間（秒）
+  min_display_duration: 2.0   # 最小表示時間（秒）
+  font_scale_factor: 1.5      # カレント行のフォント拡大率
+  visible_range: 3            # カレント行の前後表示行数
+
+# テキスト表示設定
+display:
+  font_size: 2.5             # ベースフォントサイズ（rem）
+  line_height: 1.2           # 行間
+  text_align: "left"         # 左寄せ
+  padding_left: 40           # 左パディング（px）
+
+# プリセット設定
+presets:
+  - name: "default"
+    title: "Revolver Up - Default"
+    animation:
+      char_display_duration: 0.3
+      slide_duration: 0.8
+      min_display_duration: 2.0
+    display:
+      font_size: 2.5
+      padding_left: 40
+
+  # - name: "fast"
+  #   title: "Revolver Up - Fast"
+  #   animation:
+  #     char_display_duration: 0.2
+  #     slide_duration: 0.6
+  #     min_display_duration: 1.5
+  #   display:
+  #     font_size: 2.2
+  #     padding_left: 30
+
+  # - name: "slow"
+  #   title: "Revolver Up - Slow"
+  #   animation:
+  #     char_display_duration: 0.5
+  #     slide_duration: 1.2
+  #     min_display_duration: 3.0
+  #   display:
+  #     font_size: 2.8
+  #     padding_left: 50
+
+  # - name: "compact"
+  #   title: "Revolver Up - Compact"
+  #   animation:
+  #     char_display_duration: 0.25
+  #     slide_duration: 0.7
+  #     min_display_duration: 1.8
+  #   display:
+  #     font_size: 2.0
+  #     padding_left: 25
+
+  # - name: "elegant"
+  #   title: "Revolver Up - Elegant"
+  #   animation:
+  #     char_display_duration: 0.4
+  #     slide_duration: 1.0
+  #     min_display_duration: 2.5
+  #   display:
+  #     font_size: 3.0
+  #     padding_left: 60
+
+  # - name: "presentation"
+  #   title: "Revolver Up - Presentation"
+  #   animation:
+  #     char_display_duration: 0.35
+  #     slide_duration: 0.9
+  #     min_display_duration: 2.2
+  #   display:
+  #     font_size: 2.6
+  #     padding_left: 45

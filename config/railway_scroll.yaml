@@ -37,40 +37,37 @@ presets:
       overlap_duration: 0.4
       font_size: 36
 
-  # - name: "limited_express"
-  #   description: "特急列車風（迫力）"
-  #   parameters:
-  #     fade_in_duration: 0.3
-  #     pause_duration: 1.5
-  #     fade_out_duration: 0.3
-  #     overlap_duration: 0.2
-  #     font_size: 48
-
-  # - name: "announcement"
-  #   description: "駅アナウンス風"
-  #   parameters:
-  #     fade_in_duration: 1.0
-  #     pause_duration: 3.0
-  #     fade_out_duration: 1.0
-  #     overlap_duration: 0.5
-  #     font_size: 40
-  #     empty_line_pause: 2.0
-
-  # - name: "news_ticker"
-  #   description: "ニュース速報風"
-  #   parameters:
-  #     fade_in_duration: 0.4
-  #     pause_duration: 1.2
-  #     fade_out_duration: 0.4
-  #     overlap_duration: 0.1
-  #     font_size: 38
-
-  # - name: "elegant"
-  #   description: "上品な表示"
-  #   parameters:
-  #     fade_in_duration: 1.2
-  #     pause_duration: 2.5
-  #     fade_out_duration: 1.2
-  #     overlap_duration: 0.6
-  #     font_size: 34
-  #     empty_line_pause: 1.5
+  - name: "limited_express"
+    description: "特急列車風（迫力）"
+    parameters:
+      fade_in_duration: 0.3
+      pause_duration: 1.5
+      fade_out_duration: 0.3
+      overlap_duration: 0.2
+      font_size: 48
+  - name: "announcement"
+    description: "駅アナウンス風"
+    parameters:
+      fade_in_duration: 1.0
+      pause_duration: 3.0
+      fade_out_duration: 1.0
+      overlap_duration: 0.5
+      font_size: 40
+      empty_line_pause: 2.0
+  - name: "news_ticker"
+    description: "ニュース速報風"
+    parameters:
+      fade_in_duration: 0.4
+      pause_duration: 1.2
+      fade_out_duration: 0.4
+      overlap_duration: 0.1
+      font_size: 38
+  - name: "elegant"
+    description: "上品な表示"
+    parameters:
+      fade_in_duration: 1.2
+      pause_duration: 2.5
+      fade_out_duration: 1.2
+      overlap_duration: 0.6
+      font_size: 34
+      empty_line_pause: 1.5

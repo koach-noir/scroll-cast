@@ -1,24 +1,27 @@
 #!/bin/bash
 
-# Dynamic Full Template Demo Script for scroll-cast
-# YAMLファイルから自動的にテンプレート・プリセットを読み取り一括実行
-# Usage: ./test/dynamic_full_demo.sh [input_file]
+# Demo All Config Script for scroll-cast
+# 全テンプレート・プリセット一括実行スクリプト（新web構造対応）
+# Usage: ./test/demo_all_config.sh [input_file]
 
 # デフォルト値
 INPUT_FILE=${1:-"test/sample_eng.txt"}
-OUTPUT_DIR="../contents"
+BASE_OUTPUT_DIR=${2:-"output-default"}
+OUTPUT_DIR="$BASE_OUTPUT_DIR/web"
+ASS_OUTPUT_DIR="$BASE_OUTPUT_DIR/ass"
 CONFIG_DIR="config"
 
 # ヘルプ表示
 if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
-    echo "🎬 Dynamic Full Template Demo Script for scroll-cast"
+    echo "🎬 Demo All Config Script for scroll-cast"
     echo
-    echo "YAMLファイルから自動的に全テンプレート・プリセットを読み取り一括実行"
+    echo "全テンプレート・プリセットを一括実行（新web構造対応）"
     echo
-    echo "Usage: $0 [input_file]"
+    echo "Usage: $0 [input_file] [output_dir]"
     echo
     echo "Arguments:"
     echo "  input_file   Input text file (default: test/sample_eng.txt)"
+    echo "  output_dir   Base output directory (default: output-default)"
     echo
     echo "動的検出機能:"
     echo "  - $CONFIG_DIR/ から *.yaml ファイルを自動検出"
@@ -26,9 +29,9 @@ if [ "$1" = "-h" ] || [ "$1" = "--help" ]; then
     echo "  - テンプレート・プリセット追加時の手動更新不要"
     echo
     echo "Output:"
-    echo "  📁 Directory: $OUTPUT_DIR/"
+    echo "  📁 Web Directory: [output_dir]/web/"
     echo "  🌐 HTML files: demo_[template]_[preset].html"
-    echo "  📝 ASS files:  demo_[template]_[preset].ass"
+    echo "  📝 ASS files:  [output_dir]/ass/demo_[template]_[preset].ass"
     echo
     exit 0
 fi
@@ -39,13 +42,6 @@ if [ ! -f "$INPUT_FILE" ]; then
     exit 1
 fi
 
-# テストスクリプトの存在確認
-if [ ! -f "./test/orchestrator_demo.sh" ]; then
-    echo "❌ Error: './test/orchestrator_demo.sh' script not found"
-    echo "Please run this script from the project root directory"
-    exit 1
-fi
-
 # 設定ディレクトリの存在確認
 if [ ! -d "$CONFIG_DIR" ]; then
     echo "❌ Error: Configuration directory '$CONFIG_DIR' not found"
@@ -53,12 +49,13 @@ if [ ! -d "$CONFIG_DIR" ]; then
 fi
 
 # 出力フォルダの作成
-mkdir -p "$OUTPUT_DIR/html" "$OUTPUT_DIR/ass"
+mkdir -p "$OUTPUT_DIR" "$ASS_OUTPUT_DIR"
 
-echo "🎬 Dynamic Full Template Demo - YAMLベース自動実行"
+echo "🎬 Demo All Config - 全テンプレート・プリセット一括実行"
 echo "   Input: $INPUT_FILE"
 echo "   Config Directory: $CONFIG_DIR/"
-echo "   Output Directory: $OUTPUT_DIR/"
+echo "   Web Output: $OUTPUT_DIR/"
+echo "   ASS Output: $ASS_OUTPUT_DIR/"
 echo
 
 # 実行結果を記録する配列
@@ -69,7 +66,7 @@ declare -a FILENAMES
 # 実行時間計測関数
 measure_time() {
     local start_time=$(date +%s)
-    "$@" > /tmp/template_output.log 2>&1
+    "$@" > /tmp/demo_all_config.log 2>&1
     local exit_code=$?
     local end_time=$(date +%s)
     local duration=$((end_time - start_time))
@@ -107,6 +104,12 @@ for yaml_file in "$CONFIG_DIR"/*.yaml; do
         
         # template_nameが有効な場合のみ処理
         if [ -n "$template_name" ] && [ "$template_name" != "null" ]; then
+            # テンプレートが利用可能かチェック
+            available_templates=$(PYTHONPATH=src python3 -m scrollcast.orchestrator.cli.main --list-templates 2>/dev/null | grep "^  $template_name" | wc -l)
+            if [ "$available_templates" -eq 0 ]; then
+                echo "   ⚠️  $template_name: テンプレートが利用できません（スキップ）"
+                continue
+            fi
             preset_names=($(extract_preset_names "$yaml_file"))
             preset_count=${#preset_names[@]}
             
@@ -158,64 +161,46 @@ for item in "${template_preset_list[@]}"; do
     echo "🔥 [$index/$total_count] $template - $preset プリセット"
     
     filename="demo_${template}_${preset}"
-    html_output="$OUTPUT_DIR/html/${filename}.html"
-    ass_output="$OUTPUT_DIR/ass/${filename}.ass"
+    html_output="$OUTPUT_DIR/${filename}.html"
+    ass_output="$ASS_OUTPUT_DIR/${filename}.ass"
     
-    # scroll-cast生成スクリプトを実行
-    EXEC_TIME=$(measure_time ./test/orchestrator_demo.sh "$template" "$preset" "$INPUT_FILE" "$filename")
+    # orchestrator_demo.shを実行（出力先指定）
+    EXEC_TIME=$(measure_time ./test/orchestrator_demo.sh "$template" "$preset" "$INPUT_FILE" "$filename" "$BASE_OUTPUT_DIR")
     execution_status=$?
     
     if [ $execution_status -eq 0 ]; then
-        # 生成されたファイルをデモディレクトリに移動
-        copy_success=true
+        # orchestrator_demo.shが指定された出力先に直接出力
+        files_success=true
         
-        if [ -f "contents/html/${filename}.html" ]; then
-            cp "contents/html/${filename}.html" "$html_output"
+        if [ -f "$html_output" ]; then
+            echo "   ✅ HTML: $(basename "$html_output")"
         else
-            echo "   ⚠️  HTMLファイルが見つかりません"
-            copy_success=false
+            echo "   ⚠️  HTMLファイルが見つかりません: $html_output"
+            files_success=false
         fi
         
-        if [ -f "contents/ass/${filename}.ass" ]; then
-            cp "contents/ass/${filename}.ass" "$ass_output"
+        if [ -f "$ass_output" ]; then
+            echo "   ✅ ASS: $(basename "$ass_output")"
         else
-            echo "   ⚠️  ASSファイルが見つかりません"
-            copy_success=false
+            echo "   ⚠️  ASSファイルが見つかりません: $ass_output"
+            files_success=false
         fi
         
-        # 共有アセットファイルをコピー（外部JavaScript参照システム用）
-        if [ -d "contents/html/shared" ]; then
-            mkdir -p "$OUTPUT_DIR/html/shared"
-            cp -r "contents/html/shared/"* "$OUTPUT_DIR/html/shared/" 2>/dev/null || true
-        fi
-        
-        if [ -d "contents/html/assets" ]; then
-            mkdir -p "$OUTPUT_DIR/html/assets"
-            cp -r "contents/html/assets/"* "$OUTPUT_DIR/html/assets/" 2>/dev/null || true
-        fi
-        
-        if [ -d "contents/html/templates" ]; then
-            mkdir -p "$OUTPUT_DIR/html/templates"
-            cp -r "contents/html/templates/"* "$OUTPUT_DIR/html/templates/" 2>/dev/null || true
-        fi
-        
-        if [ "$copy_success" = true ]; then
+        if [ "$files_success" = true ]; then
             RESULTS[$index]="✅ 成功"
             DURATIONS[$index]="${EXEC_TIME}秒"
             FILENAMES[$index]="$filename"
-            echo "   ✅ 生成完了: $html_output"
             ((success_count++))
         else
-            RESULTS[$index]="❌ 失敗(コピー)"
+            RESULTS[$index]="❌ 失敗(ファイル)"
             DURATIONS[$index]="${EXEC_TIME}秒"
             FILENAMES[$index]="$filename"
-            echo "   ❌ ファイルコピー失敗"
         fi
     else
         RESULTS[$index]="❌ 失敗"
         DURATIONS[$index]="${EXEC_TIME}秒"
         FILENAMES[$index]="$filename"
-        echo "   ❌ 生成失敗 (詳細: /tmp/template_output.log)"
+        echo "   ❌ 生成失敗 (詳細: /tmp/demo_all_config.log)"
     fi
     
     # 進捗表示
@@ -226,7 +211,7 @@ for item in "${template_preset_list[@]}"; do
 done
 
 echo "=================================================================="
-echo "🎯 動的全テンプレート実行完了!"
+echo "🎯 全テンプレート・プリセット実行完了!"
 
 # 実行結果サマリー
 echo
@@ -246,29 +231,39 @@ echo "└───────────────────────�
 # 生成されたファイル一覧
 echo
 echo "📁 生成されたファイル:"
-if [ -d "$OUTPUT_DIR/html" ]; then
-    html_count=$(find "$OUTPUT_DIR/html" -name "demo_*.html" | wc -l)
-    ass_count=$(find "$OUTPUT_DIR/ass" -name "demo_*.ass" | wc -l)
+
+if [ -d "$OUTPUT_DIR" ]; then
+    html_count=$(find "$OUTPUT_DIR" -name "demo_*.html" | wc -l)
     
-    echo "   🌐 HTML ディレクトリ: $OUTPUT_DIR/html/ ($html_count ファイル)"
-    for file in "$OUTPUT_DIR/html"/demo_*.html; do
+    echo "   🌐 Web ディレクトリ: $OUTPUT_DIR/ ($html_count ファイル)"
+    for file in "$OUTPUT_DIR"/demo_*.html; do
         if [ -f "$file" ]; then
             size=$(ls -lh "$file" | awk '{print $5}')
             basename_file=$(basename "$file")
             echo "      $basename_file ($size)"
         fi
     done
+fi
+
+if [ -d "$ASS_OUTPUT_DIR" ]; then
+    ass_count=$(find "$ASS_OUTPUT_DIR" -name "demo_*.ass" | wc -l)
     
-    echo "   📝 ASS ディレクトリ: $OUTPUT_DIR/ass/ ($ass_count ファイル)"
-    for file in "$OUTPUT_DIR/ass"/demo_*.ass; do
+    echo "   📝 ASS ディレクトリ: $ASS_OUTPUT_DIR/ ($ass_count ファイル)"
+    for file in "$ASS_OUTPUT_DIR"/demo_*.ass; do
         if [ -f "$file" ]; then
             lines=$(grep -c "Dialogue:" "$file" 2>/dev/null || echo "0")
             basename_file=$(basename "$file")
             echo "      $basename_file (${lines} dialogues)"
         fi
     done
-else
-    echo "   ⚠️  出力ディレクトリが見つかりません"
+fi
+
+# アセットファイル情報
+if [ -f "$OUTPUT_DIR/asset-manifest.json" ]; then
+    asset_count=$(grep -o '"deployed_assets"' "$OUTPUT_DIR/asset-manifest.json" | wc -l)
+    if [ $asset_count -gt 0 ]; then
+        echo "   📦 アセット: lib/, plugins/, templates/ (マニフェスト確認)"
+    fi
 fi
 
 echo
@@ -282,17 +277,17 @@ if [ $success_count -eq $total_count ]; then
     echo "🎉 全テンプレート・プリセット ($success_count/$total_count) が正常に生成されました！"
     echo
     echo "💡 Next steps:"
-    echo "   - ブラウザで $OUTPUT_DIR/html/ のHTMLファイルを開いてテスト"
+    echo "   - ブラウザで $OUTPUT_DIR/ のHTMLファイルを開いてテスト"
     echo "   - 新しいテンプレート・プリセットを追加した場合、このスクリプトで自動検出"
-    echo "   - 気に入ったプリセットを本番で使用"
+    echo "   - src/web/ 構造での静的アセット配信を確認"
     echo
     echo "🔧 個別実行例:"
-    echo "   ./test/orchestrator_demo.sh [template] [preset]"
+    echo "   PYTHONPATH=src python3 -m scrollcast.orchestrator.cli.main [template] \"text\" --preset [preset]"
     exit 0
 else
     echo
     echo "⚠️  一部のテンプレート・プリセットで問題が発生しました ($success_count/$total_count 成功)"
-    echo "   - 失敗の詳細は /tmp/template_output.log を確認"
-    echo "   - 個別実行でデバッグ: ./test/orchestrator_demo.sh [template] [preset]"
+    echo "   - 失敗の詳細は /tmp/demo_all_config.log を確認"
+    echo "   - 個別実行でデバッグ: PYTHONPATH=src python3 -m scrollcast.orchestrator.cli.main [template] \"text\" --preset [preset]"
     exit 1
 fi

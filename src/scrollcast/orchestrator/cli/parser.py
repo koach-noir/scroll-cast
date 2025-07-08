@@ -102,7 +102,7 @@ class CLIArgumentParser:
         # 共通オプション
         parser.add_argument(
             '--output', '-o',
-            default=f'output-default/html/{template_name}_output.html',
+            default='output-default/web/output.html',
             help='出力HTMLファイル名 (デフォルト: %(default)s)'
         )
         

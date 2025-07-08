@@ -113,7 +113,7 @@ class PluginConverterBase(ABC):
 <html lang="ja">
 {title}
     <!-- ScrollCast Shared Styles -->
-    <link rel="stylesheet" href="shared/scrollcast-styles.css">
+    <link rel="stylesheet" href="lib/scrollcast-styles.css">
     <style>
 {base_css}
         
@@ -130,7 +130,7 @@ class PluginConverterBase(ABC):
 {ui_html}
     
     <!-- ScrollCast Core Library -->
-    <script src="shared/scrollcast-core.js"></script>
+    <script src="lib/scrollcast-core.js"></script>
     <script>
 {composed_result['javascript']}
     </script>
@@ -239,7 +239,7 @@ class PluginConverterBase(ABC):
 <html lang="ja">
 {title}
     <!-- ScrollCast Shared Styles -->
-    <link rel="stylesheet" href="shared/scrollcast-styles.css">
+    <link rel="stylesheet" href="lib/scrollcast-styles.css">
 {template_css_links}
     <style>
 {base_css}
@@ -255,7 +255,7 @@ class PluginConverterBase(ABC):
 {ui_html}
     
     <!-- ScrollCast Core Library -->
-    <script src="shared/scrollcast-core.js"></script>
+    <script src="lib/scrollcast-core.js"></script>
 {plugin_scripts}
     
     <script>
@@ -282,7 +282,7 @@ class PluginConverterBase(ABC):
         script_tags = []
         for plugin_name in required_plugins:
             plugin_file = f"{plugin_name.replace('_', '-')}-plugin.js"
-            script_tags.append(f'    <script src="assets/{plugin_file}"></script>')
+            script_tags.append(f'    <script src="plugins/{plugin_file}"></script>')
         return '\n'.join(script_tags)
     
     def _get_template_category(self) -> str:

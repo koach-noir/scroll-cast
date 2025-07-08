@@ -74,7 +74,7 @@ Text Input → Boxing → Coloring → Packing → Rendering → HTML Output
 PYTHONPATH=src python3 -m scrollcast.orchestrator.cli.main typewriter_fade "Hello World" --output test.html
 
 # 全テンプレートのHTML生成テスト
-./test/dynamic_full_demo.sh
+./test/demo_all_config.sh
 
 # テンプレート一覧表示
 PYTHONPATH=src python3 -m scrollcast.orchestrator.cli.main --list-templates
@@ -257,12 +257,12 @@ scroll-castで以下の問題を調査・修正してください:
 ### 開発サイクル
 ```bash
 # 1. 開発前確認
-./test/dynamic_full_demo.sh
+./test/demo_all_config.sh
 
 # 2. 実装
 
 # 3. テスト実行
-./test/dynamic_full_demo.sh
+./test/demo_all_config.sh
 
 # 4. 統合確認（emotional-decorationとの組み合わせ）
 # (将来的にCSSオーバーライドテストを実装予定)

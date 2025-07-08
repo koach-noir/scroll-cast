@@ -73,7 +73,7 @@ pip install -e .
 ./test/orchestrator_demo.sh simple_role credits input.txt output_name
 
 # Run full integration test (generates all templates)
-./test/dynamic_full_demo.sh
+./test/demo_all_config.sh
 ```
 
 ## Project Structure
@@ -119,7 +119,7 @@ scroll-cast/
 │           ├── sc-template.css               # External CSS
 │           └── sc-template.js                # External JS
 ├── test/                   # Integration test system
-│   ├── dynamic_full_demo.sh                 # Full template test
+│   ├── demo_all_config.sh                 # Full template test
 │   └── orchestrator_demo.sh   # Single template test
 └── docs/                   # Documentation and ADRs
 ```
@@ -189,7 +189,7 @@ scroll-cast follows standardized CSS class naming and external asset architectur
 ### Running Tests
 ```bash
 # Run integration test for all templates
-./test/dynamic_full_demo.sh
+./test/demo_all_config.sh
 
 # Test specific template and preset
 ./test/orchestrator_demo.sh railway_scroll announcement test/sample_eng.txt test_output
