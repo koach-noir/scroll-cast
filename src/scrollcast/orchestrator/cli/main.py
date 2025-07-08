@@ -73,6 +73,7 @@ def main():
                 text=text,
                 output_path=output_path,
                 resolution=resolution_tuple,
+                ass_file_path=None,  # HTML単体生成時は新規ASS生成
                 preset=preset,
                 **template_params
             )
@@ -97,13 +98,14 @@ def main():
                 **template_params
             )
             
-            # HTML生成
+            # HTML生成（packingで生成済みのASSファイルを使用）
             success_html = generate_html_file(
                 engine=engine,
                 template_name=template_name,
                 text=text,
                 output_path=output_path,
                 resolution=resolution_tuple,
+                ass_file_path=ass_path,  # packingから生成されたASSファイルパス
                 preset=preset,
                 **template_params
             )
@@ -130,7 +132,8 @@ def main():
         sys.exit(1)
 
 
-def generate_html_file(engine, template_name: str, text: str, output_path: str, resolution: tuple, preset: Optional[str] = None, **template_params) -> bool:
+def generate_html_file(engine, template_name: str, text: str, output_path: str, resolution: tuple, 
+                      ass_file_path: Optional[str] = None, preset: Optional[str] = None, **template_params) -> bool:
     """HTMLファイルを生成
     
     Args:
@@ -139,6 +142,8 @@ def generate_html_file(engine, template_name: str, text: str, output_path: str, 
         text: 入力テキスト
         output_path: 出力HTMLファイルパス
         resolution: 解像度
+        ass_file_path: 既存のASSファイルパス（指定時はこれを使用、未指定時は新規生成）
+        preset: プリセット名
         **template_params: テンプレート固有パラメータ
     
     Returns:
@@ -148,21 +153,28 @@ def generate_html_file(engine, template_name: str, text: str, output_path: str, 
         # ASS to HTML conversion using the conversion system
         from ...conversion.hierarchical_template_converter import HierarchicalTemplateConverter
         
-        # 一時ASSファイルを生成
-        ass_path = f"{os.path.splitext(output_path)[0]}.ass"
-        
-        # ASS生成
-        success_ass = engine.generate_subtitle(
-            template_name=template_name,
-            text=text,
-            output_path=ass_path,
-            resolution=resolution,
-            preset=preset,
-            **template_params
-        )
-        
-        if not success_ass:
-            return False
+        # ASSファイルパスの決定
+        if ass_file_path and os.path.exists(ass_file_path):
+            # 既存のASSファイルを使用（packingから生成されたもの）
+            ass_path = ass_file_path
+            print(f"✅ 既存ASSファイルを使用: {ass_path}")
+        else:
+            # 一時ASSファイルを新規生成
+            ass_path = f"{os.path.splitext(output_path)[0]}.ass"
+            print(f"⚠️  新規ASSファイルを生成: {ass_path}")
+            
+            # ASS生成
+            success_ass = engine.generate_subtitle(
+                template_name=template_name,
+                text=text,
+                output_path=ass_path,
+                resolution=resolution,
+                preset=preset,
+                **template_params
+            )
+            
+            if not success_ass:
+                return False
         
         # HTML変換
         converter = HierarchicalTemplateConverter(template_name)
