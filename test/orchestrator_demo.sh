@@ -109,23 +109,18 @@ echo "   HTML Output: $OUTPUT_HTML"
 echo "   ASS Intermediate: $ASS_OUTPUT"
 echo
 
-# 設定ファイルのマッピング
-CONFIG_FILE=""
+# テンプレート名の設定（オーケストレーターが設定ファイルを自動解決）
 case $TEMPLATE in
     "typewriter_fade")
-        CONFIG_FILE="config/typewriter_fade.yaml"
         TEMPLATE_NAME="typewriter_fade"
         ;;
     "railway_scroll") 
-        CONFIG_FILE="config/railway_scroll.yaml"
         TEMPLATE_NAME="railway_scroll"
         ;;
     "simple_role")
-        CONFIG_FILE="config/simple_role.yaml"
         TEMPLATE_NAME="simple_role"
         ;;
     "revolver_up")
-        CONFIG_FILE="config/revolver_up.yaml"
         TEMPLATE_NAME="revolver_up"
         ;;
     *)
@@ -133,11 +128,6 @@ case $TEMPLATE in
         exit 1
         ;;
 esac
-
-if [ ! -f "$CONFIG_FILE" ]; then
-    print_status "FAIL" "Configuration file not found: $CONFIG_FILE"
-    exit 1
-fi
 
 # Step 1: Generate files using orchestrator system
 print_status "INFO" "Step 1: Generating ASS and HTML files using orchestrator system..."
