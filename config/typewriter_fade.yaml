@@ -48,15 +48,15 @@ presets:
     fade_duration: 0.06
     font_size: 32
     pause_between_lines: 0.8
-    pause_between_paragraphs: 1.5
-- description: プレゼンテーション向け
-  name: presentation
-  parameters:
-    char_interval: 0.14
-    fade_duration: 0.08
-    font_size: 40
-    pause_between_lines: 1.2
-    pause_between_paragraphs: 2.0
+#     pause_between_paragraphs: 1.5
+# - description: プレゼンテーション向け
+#   name: presentation
+#   parameters:
+#     char_interval: 0.14
+#     fade_duration: 0.08
+#     font_size: 40
+#     pause_between_lines: 1.2
+#     pause_between_paragraphs: 2.0
 tags:
 - typing
 - character
