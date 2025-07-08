@@ -102,8 +102,8 @@ class CLIArgumentParser:
         # 共通オプション
         parser.add_argument(
             '--output', '-o',
-            default=f'{template_name}_output.mp4',
-            help='出力動画ファイル名 (デフォルト: %(default)s)'
+            default=f'{template_name}_output.html',
+            help='出力HTMLファイル名 (デフォルト: %(default)s)'
         )
         
         parser.add_argument(
@@ -125,9 +125,21 @@ class CLIArgumentParser:
         )
         
         parser.add_argument(
-            '--no-video',
+            '--preset',
+            type=str,
+            help='プリセット名（config/template.yamlで定義されたパラメータセット）'
+        )
+        
+        parser.add_argument(
+            '--html-only',
             action='store_true',
-            help='動画生成をスキップ（ASSファイルのみ生成）'
+            help='HTMLファイルのみ生成（ASSファイルを生成しない）'
+        )
+        
+        parser.add_argument(
+            '--ass-only',
+            action='store_true',
+            help='ASSファイルのみ生成（HTMLファイルを生成しない）'
         )
         
         parser.add_argument(

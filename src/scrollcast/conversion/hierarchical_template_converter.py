@@ -11,6 +11,7 @@ from .utils import ASSTimeUtils, ASSMetadataExtractor, ASSDialogueParser
 from .typewriter_fade_plugin_converter import TypewriterFadePluginConverter, CharacterTiming
 from .railway_scroll_plugin_converter import RailwayScrollPluginConverter
 from .simple_role_plugin_converter import SimpleRolePluginConverter
+from .revolver_up_plugin_converter import RevolverUpPluginConverter
 
 
 class HierarchicalTemplateConverter:
@@ -33,6 +34,11 @@ class HierarchicalTemplateConverter:
                 "category": "scroll",
                 "converter_class": SimpleRolePluginConverter,
                 "template_path": "src/templates/scroll/scroll_role"
+            },
+            "revolver_up": {
+                "category": "scroll",
+                "converter_class": RevolverUpPluginConverter,
+                "template_path": "src/templates/scroll/revolver_up"
             }
         }
         

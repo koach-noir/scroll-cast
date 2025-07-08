@@ -223,7 +223,7 @@ def _generate_template_css_links(self) -> str:
 ### テスト方法
 ```bash
 # 単体テンプレート生成テスト
-./test/generate_scrollcast_with_config.sh typewriter_fade cinematic ../sample_eng.txt test_external_css
+./test/orchestrator_demo.sh typewriter_fade cinematic ../sample_eng.txt test_external_css
 
 # 生成されたHTMLでCSSリンク確認
 grep -A5 -B5 "text-color-simple.css" contents/html/test_external_css.html

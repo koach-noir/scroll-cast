@@ -35,7 +35,7 @@ setup(
     install_requires=requirements,
     entry_points={
         "console_scripts": [
-            "scroll-cast=scrollcast.cli:main",
+            "scroll-cast=scrollcast.orchestrator.cli.main:main",
         ],
     },
     include_package_data=True,

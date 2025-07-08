@@ -40,8 +40,8 @@ if [ ! -f "$INPUT_FILE" ]; then
 fi
 
 # テストスクリプトの存在確認
-if [ ! -f "./test/generate_scrollcast_with_config.sh" ]; then
-    echo "❌ Error: './test/generate_scrollcast_with_config.sh' script not found"
+if [ ! -f "./test/orchestrator_demo.sh" ]; then
+    echo "❌ Error: './test/orchestrator_demo.sh' script not found"
     echo "Please run this script from the project root directory"
     exit 1
 fi
@@ -162,7 +162,7 @@ for item in "${template_preset_list[@]}"; do
     ass_output="$OUTPUT_DIR/ass/${filename}.ass"
     
     # scroll-cast生成スクリプトを実行
-    EXEC_TIME=$(measure_time ./test/generate_scrollcast_with_config.sh "$template" "$preset" "$INPUT_FILE" "$filename")
+    EXEC_TIME=$(measure_time ./test/orchestrator_demo.sh "$template" "$preset" "$INPUT_FILE" "$filename")
     execution_status=$?
     
     if [ $execution_status -eq 0 ]; then
@@ -287,12 +287,12 @@ if [ $success_count -eq $total_count ]; then
     echo "   - 気に入ったプリセットを本番で使用"
     echo
     echo "🔧 個別実行例:"
-    echo "   ./test/generate_scrollcast_with_config.sh [template] [preset]"
+    echo "   ./test/orchestrator_demo.sh [template] [preset]"
     exit 0
 else
     echo
     echo "⚠️  一部のテンプレート・プリセットで問題が発生しました ($success_count/$total_count 成功)"
     echo "   - 失敗の詳細は /tmp/template_output.log を確認"
-    echo "   - 個別実行でデバッグ: ./test/generate_scrollcast_with_config.sh [template] [preset]"
+    echo "   - 個別実行でデバッグ: ./test/orchestrator_demo.sh [template] [preset]"
     exit 1
 fi

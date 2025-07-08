@@ -5,7 +5,7 @@ CLI Main Entry Point
 
 import sys
 import os
-from typing import Dict, Any
+from typing import Dict, Any, Optional
 from .parser import create_cli_parser
 
 
@@ -27,30 +27,35 @@ def main():
         output_path = args['output']
         ass_output = args.get('ass_output')
         resolution = args['resolution']
-        no_video = args.get('no_video', False)
+        html_only = args.get('html_only', False)
+        ass_only = args.get('ass_only', False)
+        preset = args.get('preset')
         
         # テンプレート固有パラメータを抽出
         template_params = extract_template_parameters(args, engine, template_name)
         
-        print(f"🎬 字幕動画生成開始")
+        print(f"🎬 scroll-cast生成開始")
         print(f"   テンプレート: {template_name}")
+        if preset:
+            print(f"   プリセット: {preset}")
         print(f"   テキスト: {text[:50]}{'...' if len(text) > 50 else ''}")
         print(f"   出力: {output_path}")
         
-        if no_video:
+        # 解像度を解析
+        if isinstance(resolution, tuple):
+            resolution_tuple = resolution
+        else:
+            resolution_tuple = tuple(map(int, resolution.split('x')))
+        
+        if ass_only:
             # ASSファイルのみ生成
             ass_path = ass_output or f"{os.path.splitext(output_path)[0]}.ass"
-            # 解像度を解析
-            if isinstance(resolution, tuple):
-                resolution_tuple = resolution
-            else:
-                resolution_tuple = tuple(map(int, resolution.split('x')))
-            
             success = engine.generate_subtitle(
                 template_name=template_name,
                 text=text,
                 output_path=ass_path,
                 resolution=resolution_tuple,
+                preset=preset,
                 **template_params
             )
             
@@ -60,26 +65,55 @@ def main():
                 print(f"❌ ASS字幕ファイル生成失敗")
                 sys.exit(1)
         
-        else:
-            # 動画生成
-            success = engine.generate_video(
+        elif html_only:
+            # HTMLファイルのみ生成
+            success = generate_html_file(
+                engine=engine,
                 template_name=template_name,
                 text=text,
                 output_path=output_path,
-                ass_path=ass_output,
-                resolution=resolution,
+                resolution=resolution_tuple,
+                preset=preset,
                 **template_params
             )
             
             if success:
-                print(f"✅ 字幕動画生成完了: {output_path}")
-                
-                # ASSファイルも保存されている場合は表示
-                if ass_output:
-                    print(f"   ASS字幕ファイル: {ass_output}")
-                
+                print(f"✅ HTMLファイル生成完了: {output_path}")
             else:
-                print(f"❌ 字幕動画生成失敗")
+                print(f"❌ HTMLファイル生成失敗")
+                sys.exit(1)
+        
+        else:
+            # HTML + ASS生成
+            ass_path = ass_output or f"{os.path.splitext(output_path)[0]}.ass"
+            
+            # ASS生成
+            success_ass = engine.generate_subtitle(
+                template_name=template_name,
+                text=text,
+                output_path=ass_path,
+                resolution=resolution_tuple,
+                preset=preset,
+                **template_params
+            )
+            
+            # HTML生成
+            success_html = generate_html_file(
+                engine=engine,
+                template_name=template_name,
+                text=text,
+                output_path=output_path,
+                resolution=resolution_tuple,
+                preset=preset,
+                **template_params
+            )
+            
+            if success_ass and success_html:
+                print(f"✅ ファイル生成完了:")
+                print(f"   HTML: {output_path}")
+                print(f"   ASS:  {ass_path}")
+            else:
+                print(f"❌ ファイル生成失敗")
                 sys.exit(1)
         
         print(f"🎯 処理完了!")
@@ -94,6 +128,51 @@ def main():
             import traceback
             traceback.print_exc()
         sys.exit(1)
+
+
+def generate_html_file(engine, template_name: str, text: str, output_path: str, resolution: tuple, preset: Optional[str] = None, **template_params) -> bool:
+    """HTMLファイルを生成
+    
+    Args:
+        engine: テンプレートエンジン
+        template_name: テンプレート名
+        text: 入力テキスト
+        output_path: 出力HTMLファイルパス
+        resolution: 解像度
+        **template_params: テンプレート固有パラメータ
+    
+    Returns:
+        生成成功の可否
+    """
+    try:
+        # ASS to HTML conversion using the conversion system
+        from ...conversion.hierarchical_template_converter import HierarchicalTemplateConverter
+        
+        # 一時ASSファイルを生成
+        ass_path = f"{os.path.splitext(output_path)[0]}.ass"
+        
+        # ASS生成
+        success_ass = engine.generate_subtitle(
+            template_name=template_name,
+            text=text,
+            output_path=ass_path,
+            resolution=resolution,
+            preset=preset,
+            **template_params
+        )
+        
+        if not success_ass:
+            return False
+        
+        # HTML変換
+        converter = HierarchicalTemplateConverter(template_name)
+        converter.convert_ass_to_html(ass_path, output_path)
+        
+        return True
+        
+    except Exception as e:
+        print(f"❌ HTML生成エラー: {e}")
+        return False
 
 
 def extract_template_parameters(args: Dict[str, Any], engine, template_name: str) -> Dict[str, Any]:
@@ -117,17 +196,29 @@ def extract_template_parameters(args: Dict[str, Any], engine, template_name: str
     # 共通パラメータを除外
     common_params = {'font_size', 'resolution'}
     
+    # プリセットが指定されている場合、デフォルト値を除外する
+    preset_specified = args.get('preset') is not None
+    
     # 引数からテンプレート固有パラメータを抽出
     for key, value in args.items():
         # CLI引数名をパラメータ名に変換（ハイフンをアンダースコアに）
         param_name = key.replace('-', '_')
         
         if param_name in available_params and param_name not in common_params:
+            # プリセットが指定されている場合、デフォルト値をスキップ
+            if preset_specified:
+                param_info = template.get_parameter_info(param_name)
+                if param_info and value == param_info.default:
+                    continue  # デフォルト値はスキップ
             template_params[param_name] = value
     
     # font_sizeも追加（共通パラメータ）
     if 'font_size' in args:
-        template_params['font_size'] = args['font_size']
+        # プリセットが指定されている場合、デフォルト値（64）をスキップ
+        if preset_specified and args['font_size'] == 64:
+            pass  # デフォルト値はスキップ
+        else:
+            template_params['font_size'] = args['font_size']
     
     return template_params
 

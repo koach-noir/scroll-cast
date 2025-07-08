@@ -64,13 +64,13 @@ pip install -e .
 
 ```bash
 # Generate railway scroll animation with announcement preset
-./test/generate_scrollcast_with_config.sh railway_scroll announcement input.txt output_name
+./test/orchestrator_demo.sh railway_scroll announcement input.txt output_name
 
 # Generate typewriter animation with cinematic preset  
-./test/generate_scrollcast_with_config.sh typewriter_fade cinematic input.txt output_name
+./test/orchestrator_demo.sh typewriter_fade cinematic input.txt output_name
 
 # Generate simple role credits animation
-./test/generate_scrollcast_with_config.sh simple_role credits input.txt output_name
+./test/orchestrator_demo.sh simple_role credits input.txt output_name
 
 # Run full integration test (generates all templates)
 ./test/dynamic_full_demo.sh
@@ -120,7 +120,7 @@ scroll-cast/
 │           └── sc-template.js                # External JS
 ├── test/                   # Integration test system
 │   ├── dynamic_full_demo.sh                 # Full template test
-│   └── generate_scrollcast_with_config.sh   # Single template test
+│   └── orchestrator_demo.sh   # Single template test
 └── docs/                   # Documentation and ADRs
 ```
 
@@ -192,7 +192,7 @@ scroll-cast follows standardized CSS class naming and external asset architectur
 ./test/dynamic_full_demo.sh
 
 # Test specific template and preset
-./test/generate_scrollcast_with_config.sh railway_scroll announcement test/sample_eng.txt test_output
+./test/orchestrator_demo.sh railway_scroll announcement test/sample_eng.txt test_output
 
 # Run Python unit tests
 pytest tests/

@@ -14,7 +14,15 @@ class TemplateEngine:
     
     def __init__(self):
         self._templates: Dict[str, BaseTemplate] = {}
+        self._config_loader = None
         self._discover_templates()
+        
+    def _get_config_loader(self):
+        """Config Loaderのレイジー初期化"""
+        if self._config_loader is None:
+            from ..config.config_loader import ConfigLoader
+            self._config_loader = ConfigLoader()
+        return self._config_loader
     
     def _discover_templates(self):
         """利用可能なテンプレートを自動発見"""
@@ -106,7 +114,7 @@ class TemplateEngine:
         return template.list_parameters() if template else None
     
     def generate_subtitle(self, template_name: str, text: Union[str, List[str]], 
-                         output_path: str, resolution: tuple = (1080, 1920), **parameters) -> bool:
+                         output_path: str, resolution: tuple = (1080, 1920), preset: Optional[str] = None, **parameters) -> bool:
         """字幕を生成
         
         Args:
@@ -114,7 +122,8 @@ class TemplateEngine:
             text: 入力テキスト
             output_path: 出力ASSファイルパス
             resolution: 解像度 (width, height)
-            **parameters: テンプレート固有のパラメータ
+            preset: プリセット名（指定するとconfig/template_name.yamlからパラメータを読み込み）
+            **parameters: テンプレート固有のパラメータ（presetより優先）
         
         Returns:
             生成成功の可否
@@ -125,8 +134,29 @@ class TemplateEngine:
             return False
         
         try:
+            # プリセットがある場合、設定ファイルからパラメータを読み込み
+            final_parameters = parameters.copy()
+            if preset:
+                config_loader = self._get_config_loader()
+                template_config = config_loader.load_template_config(template_name)
+                if template_config:
+                    preset_params = template_config.get_preset_parameters(preset)
+                    if preset_params:
+                        print(f"✅ プリセット '{preset}' を適用:")
+                        for key, value in preset_params.items():
+                            print(f"   {key}: {value}")
+                        # プリセットパラメータをベースにして、個別パラメータで上書き
+                        final_parameters = {**preset_params, **parameters}
+                        if parameters:
+                            print(f"🔧 個別パラメータで上書き: {list(parameters.keys())}")
+                    else:
+                        print(f"⚠️  プリセット '{preset}' が見つかりません（テンプレート: {template_name}）")
+                        print(f"   利用可能なプリセット: {template_config.get_all_preset_names()}")
+                else:
+                    print(f"⚠️  設定ファイルが見つかりません: config/{template_name}.yaml")
+            
             # パラメータをバリデーション
-            validated_params = template.validate_parameters(**parameters)
+            validated_params = template.validate_parameters(**final_parameters)
             
             # テキストを処理（font_sizeとresolutionを渡す）
             if isinstance(text, str):
@@ -194,7 +224,7 @@ class TemplateEngine:
     
     def generate_video(self, template_name: str, text: Union[str, List[str]], 
                       output_path: str, ass_path: Optional[str] = None,
-                      resolution: tuple = (1080, 1920), **parameters) -> bool:
+                      resolution: tuple = (1080, 1920), preset: Optional[str] = None, **parameters) -> bool:
         """動画を生成
         
         Args:
@@ -203,7 +233,8 @@ class TemplateEngine:
             output_path: 出力動画ファイルパス
             ass_path: ASSファイルパス（None の場合は一時ファイル生成）
             resolution: 解像度
-            **parameters: テンプレート固有のパラメータ
+            preset: プリセット名（指定するとconfig/template_name.yamlからパラメータを読み込み）
+            **parameters: テンプレート固有のパラメータ（presetより優先）
         
         Returns:
             生成成功の可否
@@ -217,7 +248,7 @@ class TemplateEngine:
         params_without_resolution = {k: v for k, v in parameters.items() if k != 'resolution'}
         
         # ASS字幕を生成
-        if not self.generate_subtitle(template_name, text, ass_path, resolution, **params_without_resolution):
+        if not self.generate_subtitle(template_name, text, ass_path, resolution, preset, **params_without_resolution):
             return False
         
         # 動画時間を計算

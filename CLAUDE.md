@@ -67,11 +67,17 @@ Text Input → Boxing → Coloring → Packing → Rendering → HTML Output
 
 ### テスト実行フロー
 ```bash
+# 🎯 推奨: オーケストレーター経由での生成テスト
+./test/orchestrator_demo.sh typewriter_fade cinematic test/sample_eng.txt output_name
+
+# 直接オーケストレーター呼び出し
+PYTHONPATH=src python3 -m scrollcast.orchestrator.cli.main typewriter_fade "Hello World" --output test.html
+
 # 全テンプレートのHTML生成テスト
 ./test/dynamic_full_demo.sh
 
-# 個別生成テスト
-./test/generate_scrollcast_with_config.sh typewriter default test/sample_eng.txt output_name
+# テンプレート一覧表示
+PYTHONPATH=src python3 -m scrollcast.orchestrator.cli.main --list-templates
 ```
 
 ### デバッグパターン
@@ -112,12 +118,14 @@ Text Input → Boxing → Coloring → Packing → Rendering → HTML Output
 scroll-castプロジェクトで[機能名]を実装してください。
 
 前提条件:
+- 🎯 **オーケストレーター中心**：全機能はorchestrator経由で実装
 - ADR-013 Dual Repository Architecture準拠
 - CSS Override Architecture対応必須
 - 既存テンプレート（typewriter/railway/scroll）との整合性保持
 - パフォーマンス要件: 209,444 chars/sec維持
 
 実装要件:
+- オーケストレーターシステムとの統合
 - CSS命名規則厳格遵守
 - emotional-decorationとの分離独立
 - 包括的テストケース追加
