@@ -1,37 +1,44 @@
 """
-Revolver Up Template (New Architecture)
-回転式上昇エフェクト - ASS生成特化版
+Revolver Up Template (Simple Role-Based)
+リボルバーアップエフェクト - simple_roleベース、中央領域での拡大効果
 """
 
 from typing import List
+from dataclasses import dataclass
 from .base import BaseTemplate, SubtitleTemplate, TemplateParameter, TimingInfo
 from ..boxing import FormattedText
 
 
+@dataclass
+class RevolverUpTimingInfo(TimingInfo):
+    """RevolverUp用タイミング情報"""
+    text: str = ""
+    style_overrides: dict = None
+    metadata: dict = None
+    
+    def __post_init__(self):
+        if self.style_overrides is None:
+            self.style_overrides = {}
+        if self.metadata is None:
+            self.metadata = {}
+
+
 class RevolverUpTemplate(BaseTemplate):
-    """回転式上昇エフェクトテンプレート（ASS生成特化）"""
+    """リボルバーアップエフェクトテンプレート（simple_roleベース + 中央拡大効果）"""
     
     @property
     def template_info(self) -> SubtitleTemplate:
         return SubtitleTemplate(
             name="revolver_up",
-            description="中央開始エンドロール風（中央一時停止付き連続スクロール）",
+            description="下→上スクロール + 中央領域でのフォントサイズ拡大",
             parameters={
                 "animation_duration": TemplateParameter(
                     name="animation_duration",
                     type=float,
-                    default=6.0,
+                    default=8.0,
                     description="画面通過時間（秒）",
-                    min_value=3.0,
-                    max_value=12.0
-                ),
-                "pause_duration": TemplateParameter(
-                    name="pause_duration",
-                    type=float,
-                    default=1.5,
-                    description="中央での一時停止時間（秒）",
-                    min_value=0.5,
-                    max_value=3.0
+                    min_value=4.0,
+                    max_value=15.0
                 ),
                 "line_interval": TemplateParameter(
                     name="line_interval",
@@ -39,7 +46,23 @@ class RevolverUpTemplate(BaseTemplate):
                     default=0.2,
                     description="行間間隔時間（秒）",
                     min_value=0.1,
-                    max_value=1.0
+                    max_value=2.0
+                ),
+                "font_size": TemplateParameter(
+                    name="font_size",
+                    type=int,
+                    default=36,
+                    description="基本フォントサイズ",
+                    min_value=24,
+                    max_value=72
+                ),
+                "scale_factor": TemplateParameter(
+                    name="scale_factor",
+                    type=float,
+                    default=1.5,
+                    description="中央領域での拡大倍率",
+                    min_value=1.2,
+                    max_value=3.0
                 ),
                 "scroll_speed": TemplateParameter(
                     name="scroll_speed",
@@ -48,202 +71,135 @@ class RevolverUpTemplate(BaseTemplate):
                     description="スクロール速度倍率",
                     min_value=0.5,
                     max_value=2.0
-                ),
-                "pause_position": TemplateParameter(
-                    name="pause_position",
-                    type=float,
-                    default=0.5,
-                    description="一時停止位置（0.0=中央下, 0.5=中央, 1.0=中央上）",
-                    min_value=0.0,
-                    max_value=1.0
                 )
             }
         )
     
+    def generate_timing_data(self, formatted_texts: List[FormattedText], **kwargs) -> List[RevolverUpTimingInfo]:
+        """RevolverUp用タイミングデータ生成"""
+        # パラメータ取得
+        animation_duration = kwargs.get('animation_duration', 8.0)
+        line_interval = kwargs.get('line_interval', 0.2)
+        scroll_speed = kwargs.get('scroll_speed', 1.0)
+        
+        # 実際のアニメーション時間を計算
+        actual_animation_duration = animation_duration / scroll_speed
+        
+        timing_data = []
+        current_time = 0.0
+        
+        # すべてのFormattedTextからテキスト行を取得
+        for formatted_text in formatted_texts:
+            text_lines = formatted_text.get_text_lines()
+            
+            for i, line_text in enumerate(text_lines):
+                # 各行は画面通過時間分表示
+                start_time = current_time
+                end_time = start_time + actual_animation_duration
+                
+                timing_info = RevolverUpTimingInfo(
+                    start_time=start_time,
+                    end_time=end_time,
+                    text=line_text,
+                    style_overrides={
+                        'alignment': 5,  # 中央揃え
+                        'margin_v': 960,  # 1080pの中央
+                        'layer': 0,
+                        'effect': 'revolver_up_scroll'
+                    },
+                    metadata={
+                        'line_index': len(timing_data),
+                        'animation_duration': actual_animation_duration,
+                        'scroll_speed': scroll_speed
+                    }
+                )
+                
+                timing_data.append(timing_info)
+                
+                # 次の行開始時間
+                current_time += line_interval
+        
+        return timing_data
+    
+    def generate_ass_dialogue_lines(self, timing_data: List[RevolverUpTimingInfo], **kwargs) -> List[str]:
+        """ASS Dialogue行生成（simple_roleと完全に同じシンプルmove）"""
+        font_size = kwargs.get('font_size', 36)
+        animation_duration = kwargs.get('animation_duration', 8.0)
+        scroll_speed = kwargs.get('scroll_speed', 1.0)
+        
+        # simple_roleと同じアニメーション時間計算
+        actual_duration = animation_duration / scroll_speed
+        actual_duration_ms = int(actual_duration * 1000)
+        
+        dialogue_lines = []
+        
+        for timing in timing_data:
+            start_time = self._format_time(timing.start_time)
+            end_time = self._format_time(timing.end_time)
+            
+            # simple_roleと完全に同じASS: シンプルなmoveのみ
+            ass_text = (
+                f"{{\\pos(960,1200)\\fs{font_size}\\an5\\c&HFFFFFF&"
+                f"\\move(960,1200,960,-120,0,{actual_duration_ms})}}"
+                f"{timing.text}"
+            )
+            
+            dialogue_line = (
+                f"Dialogue: {timing.style_overrides.get('layer', 0)},"
+                f"{start_time},{end_time},"
+                f"Default,,0,0,0,,"
+                f"{ass_text}"
+            )
+            
+            dialogue_lines.append(dialogue_line)
+        
+        return dialogue_lines
+    
+    def _format_time(self, seconds: float) -> str:
+        """秒をASS時間形式に変換"""
+        hours = int(seconds // 3600)
+        minutes = int((seconds % 3600) // 60)
+        secs = seconds % 60
+        return f"{hours}:{minutes:02d}:{secs:05.2f}"
+    
     def generate_ass_from_formatted(self, formatted_text: FormattedText, **kwargs) -> str:
-        """整形済みテキストからASS字幕を生成
-        
-        Args:
-            formatted_text: 整形済みテキスト
-            **kwargs: テンプレートパラメータ
-        
-        Returns:
-            完全なASS字幕内容
-        """
-        # パラメータ検証
-        params = self.validate_parameters(**kwargs)
-        
-        # 解像度取得
-        resolution = params.get('resolution', (1080, 1920))
+        """整形済みテキストからASS字幕を生成"""
+        # タイミングデータ生成
+        timing_data = self.generate_timing_data([formatted_text], **kwargs)
         
         # ASSヘッダー生成
-        ass_content = self.generate_ass_header(resolution=resolution, **{k: v for k, v in params.items() if k != 'resolution'})
+        resolution = kwargs.get('resolution', (1080, 1920))
+        header = self.generate_ass_header(resolution, **kwargs)
         
-        # 各行のDialogue行を生成
-        dialogue_lines = self._generate_dialogue_lines(formatted_text, params)
+        # Dialogue行生成
+        dialogue_lines = self.generate_ass_dialogue_lines(timing_data, **kwargs)
         
-        # 完全なASS内容を構築
-        ass_content += "\n".join(dialogue_lines)
+        # 完全なASS内容を組み立て
+        ass_content = header + "\n[Events]\n"
+        ass_content += "Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text\n"
+        
+        for dialogue in dialogue_lines:
+            ass_content += dialogue + "\n"
         
         return ass_content
     
     def calculate_total_duration(self, formatted_text: FormattedText, **kwargs) -> float:
-        """総再生時間を計算
+        """総再生時間を計算"""
+        line_interval = kwargs.get('line_interval', 0.2)
+        animation_duration = kwargs.get('animation_duration', 8.0)
+        scroll_speed = kwargs.get('scroll_speed', 1.0)
         
-        Args:
-            formatted_text: 整形済みテキスト
-            **kwargs: テンプレートパラメータ
+        # テキスト行のみを取得
+        lines = formatted_text.get_text_lines()
+        num_lines = len(lines)
         
-        Returns:
-            総時間（秒）
-        """
-        params = self.validate_parameters(**kwargs)
-        
-        text_lines = formatted_text.get_text_lines()
-        if not text_lines:
+        if num_lines == 0:
             return 0.0
         
-        animation_duration = params['animation_duration']
-        pause_duration = params['pause_duration']
-        line_interval = params['line_interval']
-        scroll_speed = params['scroll_speed']
-        
         # 実際のアニメーション時間
         actual_animation_duration = animation_duration / scroll_speed
         
-        # エンドロール式計算：最後の行が完全に画面を通過するまで
-        total_time = (len(text_lines) - 1) * line_interval + actual_animation_duration + pause_duration
+        # 最後の行が完全に通過するまでの時間
+        total_duration = (num_lines - 1) * line_interval + actual_animation_duration
         
-        return total_time
-    
-    def _generate_dialogue_lines(self, formatted_text: FormattedText, params: dict) -> List[str]:
-        """Dialogue行を生成
-        
-        Args:
-            formatted_text: 整形済みテキスト
-            params: バリデーション済みパラメータ
-        
-        Returns:
-            Dialogue行のリスト
-        """
-        dialogue_lines = []
-        
-        # 位置設定
-        resolution = params.get('resolution', (1080, 1920))
-        center_x = resolution[0] // 2
-        center_y = resolution[1] // 2
-        pause_position = params['pause_position']
-        
-        # 一時停止位置を計算（中央から上下に調整）
-        pause_y = int(center_y + (pause_position - 0.5) * 200)  # ±100px範囲
-        
-        # タイミング計算
-        timings = self._calculate_continuous_timings(formatted_text, params)
-        
-        # テキスト行のみを処理
-        text_lines = formatted_text.get_text_lines()
-        
-        for i, line in enumerate(text_lines):
-            if not line.strip() or i >= len(timings):
-                continue
-            
-            timing_set = timings[i]
-            
-            # 連続スクロール（中央開始→一時停止→上昇消失）
-            scroll_text = self._create_continuous_scroll_effect(
-                line, center_x, pause_y, 
-                params['animation_duration'], params['pause_duration'], params['scroll_speed']
-            )
-            scroll_line = self.create_dialogue_line(scroll_text, timing_set)
-            dialogue_lines.append(scroll_line)
-        
-        return dialogue_lines
-    
-    def _calculate_continuous_timings(self, formatted_text: FormattedText, params: dict) -> List[TimingInfo]:
-        """連続スクロールタイミングを計算
-        
-        Args:
-            formatted_text: 整形済みテキスト
-            params: パラメータ
-        
-        Returns:
-            各行のタイミング情報のリスト
-        """
-        text_lines = formatted_text.get_text_lines()
-        timings = []
-        current_time = 0.0
-        
-        animation_duration = params['animation_duration']
-        pause_duration = params['pause_duration']
-        line_interval = params['line_interval']
-        scroll_speed = params['scroll_speed']
-        
-        # 実際のアニメーション時間
-        actual_animation_duration = animation_duration / scroll_speed
-        
-        # 複雑さによる調整
-        line_complexities = formatted_text.get_timing_hint('line_complexities', [1.0] * len(text_lines))
-        reading_speed_multiplier = formatted_text.get_timing_hint('reading_speed_multiplier', 1.0)
-        
-        for i, line in enumerate(text_lines):
-            if not line.strip():
-                continue
-            
-            # 複雑さを考慮した調整
-            complexity = line_complexities[i] if i < len(line_complexities) else 1.0
-            adjusted_pause = pause_duration * complexity * reading_speed_multiplier
-            
-            # 各行の総表示時間
-            total_line_duration = actual_animation_duration + adjusted_pause
-            
-            timing = TimingInfo(
-                start_time=current_time,
-                end_time=current_time + total_line_duration,
-                layer=0
-            )
-            
-            timings.append(timing)
-            
-            # 次の行はエンドロール風に短い間隔で開始
-            current_time += line_interval
-        
-        return timings
-    
-    def _create_continuous_scroll_effect(self, text: str, center_x: int, pause_y: int, 
-                                        animation_duration: float, pause_duration: float, 
-                                        scroll_speed: float) -> str:
-        """連続スクロールエフェクトを作成（中央開始→一時停止→上昇消失）
-        
-        Args:
-            text: 表示テキスト
-            center_x: 中央X座標
-            pause_y: 一時停止Y座標
-            animation_duration: アニメーション総時間（秒）
-            pause_duration: 一時停止時間（秒）
-            scroll_speed: スクロール速度倍率
-        
-        Returns:
-            ASS効果付きテキスト
-        """
-        # 実際の時間計算
-        actual_animation_duration = animation_duration / scroll_speed
-        scroll_duration = actual_animation_duration - pause_duration
-        
-        # 時間をミリ秒に変換
-        pause_duration_ms = int(pause_duration * 1000)
-        scroll_duration_ms = int(scroll_duration * 1000)
-        total_duration_ms = int(actual_animation_duration * 1000)
-        
-        # 位置計算
-        start_y = pause_y  # 中央から開始
-        end_y = pause_y - 300  # 上に消失
-        
-        # ASSエフェクト：中央出現→一時停止→上昇消失
-        ass_text = (
-            f"{{\\pos({center_x},{start_y})\\alpha&H00&"  # 中央に出現
-            f"\\t(0,{pause_duration_ms},\\alpha&H00&)"  # 一時停止
-            f"\\t({pause_duration_ms},{total_duration_ms},\\move({center_x},{start_y},{center_x},{end_y})\\alpha&HFF&)"  # 上昇消失
-            f"}}{text}"
-        )
-        
-        return ass_text
+        return total_duration

@@ -112,8 +112,7 @@ class RevolverUpPluginConverter(PluginConverterBase):
         
         for line_data in self.line_timings:
             line_html = (
-                f'<div class="text-line" data-line="{line_data["line_index"]}" '
-                f'data-char-count="{line_data["char_count"]}">'
+                f'<div class="text-line" data-line="{line_data["line_index"]}">'
                 f'{line_data["text"]}</div>'
             )
             content_parts.append(line_html)
@@ -144,8 +143,8 @@ class RevolverUpPluginConverter(PluginConverterBase):
         return f"ScrollCast - Revolver Up Effect ({line_count} lines)"
     
     def _build_template_html(self) -> str:
-        """テンプレート固有HTMLを構築"""
-        return f'<div class="text-container" data-template="revolver_up"><div class="revolver-viewport">{self._build_content_html()}</div></div>'
+        """テンプレート固有HTMLを構築 - simple_roleと同じシンプル構造"""
+        return f'<div class="text-container" data-template="scroll">{self._build_content_html()}</div>'
     
     def _build_ui_elements_html(self) -> str:
         """UI要素HTML（リボルバーアップは基本UI不要）"""
