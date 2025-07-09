@@ -1,0 +1,69 @@
+/*
+ * Revolver Up Template CSS - 2024 Modern Implementation
+ * CSS Scroll-Driven Animations でハイライト効果を実現
+ */
+
+/* 基本レイアウト - simple_roleと同じ構造 */
+.text-container[data-template="scroll"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* テキスト行の基本スタイル - JavaScript Plugin前提 */
+.text-container[data-template="scroll"] .text-line {
+    display: none; /* 初期状態は非表示、JavaScriptで制御 */
+    font-size: 2.5rem;
+    line-height: 1.2;
+    white-space: nowrap;
+    font-weight: normal;
+}
+
+/* レスポンシブ対応 */
+@media (max-width: 768px) {
+    .text-container[data-template="scroll"] .text-line {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .text-container[data-template="scroll"] .text-line {
+        font-size: 1.4rem;
+    }
+}
+
+/* フォールバック: CSS Scroll-Driven Animations未対応ブラウザ */
+@supports not (animation-timeline: view()) {
+    .text-container[data-template="scroll"] .text-line {
+        /* JavaScript fallback用のクラス */
+        animation: none;
+    }
+    
+    .text-container[data-template="scroll"] .text-line.js-highlight {
+        transform: scale(1.5);
+        opacity: 1;
+        color: #ffff99;
+        text-shadow: 0 0 20px rgba(255, 255, 153, 0.8);
+    }
+}
+
+/* デバッグモード */
+.text-container[data-template="scroll"].debug .text-line {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+/* CSS Override Architecture サポート - decoration hooks */
+.text-line.decoration-enhanced {
+    /* 装飾システム用フック */
+}
+
+.text-container[data-template="scroll"] .text-line.decoration-enhanced {
+    /* revolver_up固有の装飾フック */
+}

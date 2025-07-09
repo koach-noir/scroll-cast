@@ -1,0 +1,12 @@
+{
+  "deployed_assets": [
+    "templates/typewriter/sc-base.js",
+    "scrollcast-styles.css",
+    "auto-play-plugin.js",
+    "typewriter-pop-display-plugin.js",
+    "scrollcast-core.js",
+    "templates/typewriter/typewriter_pop/sc-template.css"
+  ],
+  "deployment_timestamp": null,
+  "total_files": 6
+}

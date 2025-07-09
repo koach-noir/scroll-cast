@@ -1,0 +1,13 @@
+{
+  "deployed_assets": [
+    "templates/scroll/scroll_role/sc-template.js",
+    "scrollcast-styles.css",
+    "auto-play-plugin.js",
+    "templates/scroll/sc-base.js",
+    "templates/scroll/scroll_role/sc-template.css",
+    "scrollcast-core.js",
+    "simple-role-display-plugin.js"
+  ],
+  "deployment_timestamp": 1752068954.0252476,
+  "total_files": 7
+}

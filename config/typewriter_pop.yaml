@@ -1,0 +1,25 @@
+template_name: typewriter_pop
+version: 1.0.0
+description: typewriter_pop animation effect
+author: Template Generator
+category: typewriter
+tags:
+- animation
+- typewriter
+- typewriter_pop
+
+default_parameters:
+  duration: 8.0
+  delay: 0.5
+  font_size: 64
+  font_name: Arial
+
+parameter_constraints: {}
+
+presets:
+- name: default
+  description: Default typewriter_pop animation
+  parameters:
+    duration: 8.0
+    delay: 0.5
+    font_size: 64
