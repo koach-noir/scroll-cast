@@ -110,7 +110,25 @@ open test.html
 ./test/demo_all_config.sh
 ```
 
-### Step 5: 完了・納品 (1分)
+### Step 5: 統合テストシステムへの登録 (2分) ⚠️ 重要
+```bash
+# orchestrator_demo.shのcase文にテンプレートを追加（統合テスト対応）
+vim test/orchestrator_demo.sh
+
+# 以下のcase文を *)の前に追加:
+"[template_name]")
+    TEMPLATE_NAME="[template_name]"
+    ;;
+
+# 例:
+"typewriter_pop")
+    TEMPLATE_NAME="typewriter_pop"
+    ;;
+```
+
+**⚠️ 重要**: この手順を忘れると統合テスト（`./integration_test.sh`）で `❌ FAIL: Unknown template` エラーが発生します。
+
+### Step 6: 完了・納品 (1分)
 ```bash
 # テストファイルのクリーンアップ
 rm -f test.html test.ass

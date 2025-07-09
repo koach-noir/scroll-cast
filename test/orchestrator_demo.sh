@@ -130,6 +130,9 @@ case $TEMPLATE in
     "revolver_up")
         TEMPLATE_NAME="revolver_up"
         ;;
+    "typewriter_pop")
+        TEMPLATE_NAME="typewriter_pop"
+        ;;
     *)
         print_status "FAIL" "Unknown template: $TEMPLATE"
         exit 1

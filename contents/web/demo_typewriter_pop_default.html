@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypewriterPop Animation</title>
+    <!-- ScrollCast Shared Styles -->
+    <link rel="stylesheet" href="lib/scrollcast-styles.css">
+    <!-- Template Specific Styles -->
+    <link rel="stylesheet" href="templates/typewriter/typewriter_pop/sc-template.css">
+    <!-- Template-specific text color enhancement -->
+    <link rel="stylesheet" href="../css/text-color-simple.css">
+    <!-- Advanced color and visual effects -->
+    <link rel="stylesheet" href="../css/scroll-cast-text-color-enhancement.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #000;
+            color: #fff;
+            height: 100vh;
+            overflow: hidden;
+            user-select: none;
+            cursor: pointer;
+        }
+        
+
+        .text-container {
+            font-size: 5.93vw;
+            font-family: Arial, sans-serif;
+        }
+        
+        /* デスクトップ表示での固定サイズ */
+        @media (min-width: 768px) {
+            .text-container {
+                font-size: 64px;
+            }
+        }
+        
+        
+        .control-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 12px;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+<div class="text-container" data-template="typewriter">
+    <div class="text-line" data-line="0">Test from integration</div>
+</div>
+    
+
+    <div class="ui-overlay">
+        <div class="control-panel">
+            <button id="playPauseBtn" class="control-btn">▶️</button>
+            <button id="resetBtn" class="control-btn">🔄</button>
+            <div class="progress-bar">
+                <div id="progressIndicator" class="progress-indicator"></div>
+            </div>
+        </div>
+    </div>
+        
+    
+    <!-- ScrollCast Core Library -->
+    <script src="lib/scrollcast-core.js"></script>
+    <script src="plugins/auto-play-plugin.js"></script>
+    <script src="plugins/typewriter-pop-display-plugin.js"></script>
+    
+    <script>
+        // Template Integration Layer
+        document.addEventListener('DOMContentLoaded', function() {
+            // タイミングデータ
+            const timingData = [
+  {
+    "text": "Test from integration",
+    "start_time": 0,
+    "duration": 8000,
+    "line_index": 0
+  }
+];
+            
+            // テンプレート設定
+            const templateConfig = {
+    "template_name": "typewriter_pop",
+    "navigation_unit": "line",
+    "required_plugins": [
+        "auto_play",
+        "typewriter_pop_display"
+    ],
+    "plugin_configs": {
+        "auto_play": {
+            "auto_start": true,
+            "initial_delay": 500
+        },
+        "typewriter_pop_display": {
+            "element_selector": ".text-line"
+        }
+    }
+};
+            templateConfig.timingData = timingData;
+            
+            // ScrollCastコアで全プラグインを初期化
+            if (window.ScrollCastCore) {
+                window.ScrollCastCore.initializePlugins(templateConfig);
+            }
+        });
+    </script>
+</body>
+</html>

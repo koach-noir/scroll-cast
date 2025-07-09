@@ -53,6 +53,7 @@ class TemplateGenerator:
         # 6. 統合登録の更新
         self._update_template_engine()
         self._update_hierarchical_converter()
+        self._update_orchestrator_demo_sh()
         
         print(f"✅ Template generation completed!")
         print(f"📁 Generated files:")
@@ -62,6 +63,8 @@ class TemplateGenerator:
         print(f"   - config/{self.template_name}.yaml")
         print(f"   - src/web/plugins/{self.template_name.replace('_', '-')}-display-plugin.js")
         print(f"   - Updated: src/scrollcast/orchestrator/template_engine.py")
+        print(f"   - Updated: src/scrollcast/conversion/hierarchical_template_converter.py")
+        print(f"   - Updated: test/orchestrator_demo.sh")
     
     def _generate_ass_coloring_module(self) -> None:
         """ASS生成モジュールを生成"""
@@ -643,11 +646,73 @@ parameter_constraints: {{}}
             pattern = r'("revolver_up": \{[^}]*\})'
             replacement = r'\1,\n' + mapping_entry
             updated_content = re.sub(pattern, replacement, updated_content, flags=re.DOTALL)
-            
-            converter_path.write_text(updated_content, encoding='utf-8')
-            print(f"✅ Updated hierarchical_template_converter.py with {self.class_name}PluginConverter mapping")
         else:
             print(f"⚠️  Warning: Could not find template_mapping section in hierarchical_template_converter.py")
+            return
+        
+        # _extract_timing_dataメソッドにcase文を追加
+        timing_case = f'''        elif self.template_name == "{self.template_name}":
+            return self._extract_{self.template_name}_timing_data()'''
+        
+        if 'elif self.template_name == "simple_role":' in updated_content:
+            pattern = r'(elif self\.template_name == "simple_role":\s+return self\._extract_simple_role_timing_data\(\))'
+            replacement = f'{timing_case}\n\\1'
+            updated_content = re.sub(pattern, replacement, updated_content)
+        
+        # タイミングデータ抽出メソッドを追加
+        timing_method = f'''    
+    def _extract_{self.template_name}_timing_data(self) -> List[Dict[str, Any]]:
+        """{self.class_name}用タイミングデータを抽出"""
+        timing_data = []
+        
+        # {self.class_name}はライン単位のアニメーション
+        for timing in self.data_converter.timings:
+            timing_data.append({{
+                "sequence_index": timing.line_index,
+                "start_time": timing.start_time_ms,
+                "end_time": timing.end_time_ms,
+                "duration": timing.duration_ms,
+                "text": timing.text
+            }})
+        
+        return timing_data'''
+        
+        # simple_role用メソッドの後に追加
+        if 'def _extract_simple_role_timing_data(self)' in updated_content:
+            # simple_roleメソッドの終わりを見つけて、その後に追加
+            pattern = r'(def _extract_simple_role_timing_data\(self\).*?return timing_data)'
+            replacement = f'\\1{timing_method}'
+            updated_content = re.sub(pattern, replacement, updated_content, flags=re.DOTALL)
+        
+        converter_path.write_text(updated_content, encoding='utf-8')
+        print(f"✅ Updated hierarchical_template_converter.py with {self.class_name}PluginConverter mapping and timing extraction")
+    
+    def _update_orchestrator_demo_sh(self) -> None:
+        """orchestrator_demo.shを自動更新（統合テスト対応）"""
+        demo_path = self.base_path / "test" / "orchestrator_demo.sh"
+        
+        if not demo_path.exists():
+            print(f"⚠️  Warning: orchestrator_demo.sh not found at {demo_path}")
+            return
+        
+        # 既存コンテンツを読み込み
+        content = demo_path.read_text(encoding='utf-8')
+        
+        # 新しいcase文を生成
+        new_case = f'''    "{self.template_name}")
+        TEMPLATE_NAME="{self.template_name}"
+        ;;'''
+        
+        # *)の前に新しいcase文を挿入
+        pattern = r'(\s+\*\)\s+print_status "FAIL" "Unknown template: \$TEMPLATE")'
+        replacement = f'{new_case}\n\\1'
+        
+        if re.search(pattern, content):
+            updated_content = re.sub(pattern, replacement, content)
+            demo_path.write_text(updated_content, encoding='utf-8')
+            print(f"✅ Updated orchestrator_demo.sh with {self.template_name} case")
+        else:
+            print(f"⚠️  Warning: Could not find insertion point in orchestrator_demo.sh")
 
 
 def main():
@@ -687,6 +752,12 @@ def main():
     print(f"2. Implement animation in: src/web/plugins/{template_name.replace('_', '-')}-display-plugin.js")
     print(f"3. Customize CSS styles in: src/web/templates/{category}/{template_name}/sc-template.css")
     print(f"4. Test with: PYTHONPATH=src python3 -m scrollcast.orchestrator.cli.main {template_name} 'Test'")
+    print(f"5. Run integration test: ./integration_test.sh")
+    print(f"")
+    print(f"✅ 統合テスト対応完了:")
+    print(f"   - orchestrator_demo.sh への自動登録済み")
+    print(f"   - タイミングデータ抽出メソッド自動追加済み")
+    print(f"   - 統合テストで正常動作するはずです")
 
 
 if __name__ == '__main__':
