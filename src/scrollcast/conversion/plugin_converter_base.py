@@ -186,7 +186,13 @@ class PluginConverterBase(ABC):
             if template_category and template_name:
                 self.file_deployer.sync_template_assets(output_dir, template_category, template_name)
             
-            # アセットマニフェストを作成
+            # アセットマニフェストを作成（オプショナル - 実際のHTML/JS動作には不要）
+            # 必要なシーン例:
+            # - CI/CDでのアセット配信検証
+            # - デバッグ時のアセット依存関係確認
+            # - 大規模プロジェクトでの配信履歴追跡
+            # - アセット配信失敗時のトラブルシューティング
+            # 不要な場合は以下をコメントアウト:
             self.file_deployer.create_asset_manifest(output_dir)
             
         except Exception as e:
