@@ -38,6 +38,12 @@ class TemplateEngine:
             print(f"Warning: Failed to import TypewriterFadeTemplate: {e}")
 
         try:
+            from ..coloring.typewriter_fill_screen import TypewriterFillScreenTemplate
+            self.register_template(TypewriterFillScreenTemplate())
+        except ImportError as e:
+            print(f"Warning: Failed to import TypewriterFillScreenTemplate: {e}")
+
+        try:
             from ..coloring.typewriter_pop import TypewriterPopTemplate
             self.register_template(TypewriterPopTemplate())
         except ImportError as e:

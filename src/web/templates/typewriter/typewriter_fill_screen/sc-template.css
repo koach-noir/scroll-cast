@@ -1,0 +1,76 @@
+/*
+ * TypewriterFillScreen Template CSS
+ * typewriter_fill_screen アニメーション効果
+ */
+
+/* Main container - follows scroll-cast naming standards */
+.text-container[data-template="typewriter"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: #000;
+    color: #fff;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+}
+
+/* Text lines - JavaScript Plugin controls visibility */
+.text-container[data-template="typewriter"] .text-line {
+    display: none; /* 初期状態は非表示、JavaScriptで制御 */
+    position: absolute; /* JavaScriptで動的にposition設定 */
+    top: 0; /* JavaScriptで動的にtop設定 */
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 4rem; /* 一定の文字サイズ（64px相当） */
+    line-height: 1.2;
+    white-space: nowrap;
+    font-weight: normal;
+    color: white;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+    z-index: 1;
+}
+
+/* レスポンシブ対応 - 一定文字サイズを維持しながら調整 */
+@media (max-width: 768px) {
+    .text-container[data-template="typewriter"] .text-line {
+        font-size: 3rem; /* タブレット対応 */
+    }
+}
+
+@media (max-width: 480px) {
+    .text-container[data-template="typewriter"] .text-line {
+        font-size: 2rem; /* モバイル対応 */
+    }
+}
+
+/* アニメーション効果 - 画面いっぱいに行を敷き詰める */
+.text-container[data-template="typewriter"] .text-line.animating {
+    display: block;
+    opacity: 1;
+    /* 固定位置に配置（JavaScriptで動的に制御） */
+}
+
+/* 画面クリア効果 */
+.text-container[data-template="typewriter"] .text-line.clearing {
+    opacity: 0;
+    transition: opacity 0.1s ease-out;
+}
+
+/* CSS Override Architecture サポート - decoration hooks */
+.text-line.decoration-enhanced {
+    /* 装飾システム用フック */
+}
+
+.text-container[data-template="typewriter"] .text-line.decoration-enhanced {
+    /* typewriter_fill_screen固有の装飾フック */
+}
+
+/* デバッグモード */
+.text-container[data-template="typewriter"].debug .text-line {
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    background: rgba(255, 255, 255, 0.05);
+}

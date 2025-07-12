@@ -132,7 +132,10 @@ case $TEMPLATE in
         ;;
     "typewriter_pop")
         TEMPLATE_NAME="typewriter_pop"
+        ;;    "typewriter_fill_screen")
+        TEMPLATE_NAME="typewriter_fill_screen"
         ;;
+
     *)
         print_status "FAIL" "Unknown template: $TEMPLATE"
         exit 1

@@ -1,0 +1,37 @@
+template_name: typewriter_fill_screen
+version: 1.0.0
+description: typewriter_fill_screen animation effect
+author: Template Generator
+category: typewriter
+tags:
+- animation
+- typewriter
+- typewriter_fill_screen
+
+default_parameters:
+  duration: 8.0
+  delay: 0.5
+  font_size: 64
+  font_name: Arial
+
+parameter_constraints: {}
+
+presets:
+- name: default
+  description: Default typewriter_fill_screen animation
+  parameters:
+    duration: 8.0
+    delay: 0.5
+    font_size: 64
+- name: fast_fill
+  description: Fast screen filling animation
+  parameters:
+    duration: 4.0
+    delay: 0.2
+    font_size: 56
+- name: large_text
+  description: Large text screen filling
+  parameters:
+    duration: 10.0
+    delay: 0.8
+    font_size: 80

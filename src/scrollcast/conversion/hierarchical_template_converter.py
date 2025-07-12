@@ -12,6 +12,7 @@ from .typewriter_fade_plugin_converter import TypewriterFadePluginConverter, Cha
 from .railway_scroll_plugin_converter import RailwayScrollPluginConverter
 from .simple_role_plugin_converter import SimpleRolePluginConverter
 from .revolver_up_plugin_converter import RevolverUpPluginConverter
+from .typewriter_fill_screen_plugin_converter import TypewriterFillScreenPluginConverter
 from .typewriter_pop_plugin_converter import TypewriterPopPluginConverter
 
 
@@ -40,6 +41,11 @@ class HierarchicalTemplateConverter:
                 "category": "scroll",
                 "converter_class": RevolverUpPluginConverter,
                 "template_path": os.path.join(os.path.dirname(__file__), "..", "..", "web", "templates", "scroll", "revolver_up")
+            },
+            "typewriter_fill_screen": {
+                "category": "typewriter",
+                "converter_class": TypewriterFillScreenPluginConverter,
+                "template_path": os.path.join(os.path.dirname(__file__), "..", "..", "web", "templates", "typewriter", "typewriter_fill_screen")
             },
             "typewriter_pop": {
                 "category": "typewriter",
@@ -95,6 +101,8 @@ class HierarchicalTemplateConverter:
             return self._extract_typewriter_pop_timing_data()
         elif self.template_name == "railway_scroll":
             return self._extract_railway_timing_data()
+        elif self.template_name == "typewriter_fill_screen":
+            return self._extract_typewriter_fill_screen_timing_data()
         elif self.template_name == "simple_role":
             return self._extract_simple_role_timing_data()
         else:
@@ -196,6 +204,21 @@ class HierarchicalTemplateConverter:
                 "start_time": line_timing.start_ms,
                 "end_time": line_timing.end_ms,
                 "duration": line_timing.end_ms - line_timing.start_ms
+            })
+        
+        return timing_data    
+    def _extract_typewriter_fill_screen_timing_data(self) -> List[Dict[str, Any]]:
+        """TypewriterFillScreen用タイミングデータを抽出"""
+        timing_data = []
+        
+        # TypewriterFillScreenはライン単位のアニメーション
+        for timing in self.data_converter.timings:
+            timing_data.append({
+                "sequence_index": timing.line_index,
+                "start_time": timing.start_time_ms,
+                "end_time": timing.end_time_ms,
+                "duration": timing.duration_ms,
+                "text": timing.text
             })
         
         return timing_data

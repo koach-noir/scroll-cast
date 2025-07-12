@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>TypewriterPop Animation</title>
+    <title>TypewriterFillScreen Animation</title>
     <!-- ScrollCast Shared Styles -->
     <link rel="stylesheet" href="lib/scrollcast-styles.css">
     <!-- Template Specific Styles -->
-    <link rel="stylesheet" href="templates/typewriter/typewriter_pop/sc-template.css">
+    <link rel="stylesheet" href="templates/typewriter/typewriter_fill_screen/sc-template.css">
     <!-- Template-specific text color enhancement -->
     <link rel="stylesheet" href="../css/text-color-simple.css">
     <!-- Advanced color and visual effects -->
@@ -54,7 +54,10 @@
 </head>
 <body>
 <div class="text-container" data-template="typewriter">
-    <div class="text-line" data-line="0">Hello World Test</div>
+    <div class="text-line" data-line="0">Hello World Test Line</div>
+    <div class="text-line" data-line="1">1</div>
+    <div class="text-line" data-line="2">Line 2</div>
+    <div class="text-line" data-line="3">Test Line 3</div>
 </div>
     
 
@@ -72,7 +75,7 @@
     <!-- ScrollCast Core Library -->
     <script src="lib/scrollcast-core.js"></script>
     <script src="plugins/auto-play-plugin.js"></script>
-    <script src="plugins/typewriter-pop-display-plugin.js"></script>
+    <script src="plugins/typewriter-fill-screen-display-plugin.js"></script>
     
     <script>
         // Template Integration Layer
@@ -80,27 +83,45 @@
             // タイミングデータ
             const timingData = [
   {
-    "text": "Hello World Test",
+    "text": "Hello World Test Line",
     "start_time": 0,
     "duration": 8000,
     "line_index": 0
+  },
+  {
+    "text": "1",
+    "start_time": 500,
+    "duration": 8000,
+    "line_index": 1
+  },
+  {
+    "text": "Line 2",
+    "start_time": 1000,
+    "duration": 8000,
+    "line_index": 2
+  },
+  {
+    "text": "Test Line 3",
+    "start_time": 1500,
+    "duration": 8000,
+    "line_index": 3
   }
 ];
             
             // テンプレート設定
             const templateConfig = {
-    "template_name": "typewriter_pop",
+    "template_name": "typewriter_fill_screen",
     "navigation_unit": "line",
     "required_plugins": [
         "auto_play",
-        "typewriter_pop_display"
+        "typewriter_fill_screen_display"
     ],
     "plugin_configs": {
         "auto_play": {
             "auto_start": true,
             "initial_delay": 500
         },
-        "typewriter_pop_display": {
+        "typewriter_fill_screen_display": {
             "element_selector": ".text-line"
         }
     }
